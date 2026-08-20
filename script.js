@@ -76,7 +76,7 @@ const properties = [
     initialDeposit: "₦3,000,000",
     paymentPlan: "Outright (₦75M) | 6M (₦80M) | 12M (₦85M)",
     features: ["Integrated Rooftop Solar Panels", "Recyclable Eco Finishes", "Fully Fitted Appliances"],
-    imageUrl: "images/aramide1.jpeg"
+    imageUrl: "./images/aramide1.jpeg"
   },
   {
     id: 7,
