@@ -2,7 +2,43 @@
  * TOBADEM HOMES - MASTER JAVASCRIPT
  * Includes Property Listing Engine, Location Filtering, and Dynamic Blog Modal System
  */
+// ==========================================
+// 1. SUPABASE DATABASE CONFIGURATION
+// ==========================================
+const SUPABASE_URL = "https://xyzcompany.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZ3N6b3V4dWVxcGdlcHdweXFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjE4MTYsImV4cCI6MjEwMjg5NzgxNn0.ullcb5NuaENW8577va_FyFDsGw6pO1GPDt2WfgG_6GE";
 
+// Initialize Supabase Client
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Variable to hold properties dynamically
+let properties = [];
+
+// ==========================================
+// 2. FETCH PROPERTIES FROM SUPABASE
+// ==========================================
+async function fetchPropertiesFromSupabase() {
+  try {
+    const { data, error } = await _supabase
+      .from('properties')
+      .select('*');
+
+    if (error) {
+      console.error("Supabase Error:", error.message);
+      return;
+    }
+
+    if (data && data.length > 0) {
+      properties = data;
+    }
+
+    // Call your existing card renderer function
+    renderTobademProperties("property-grid");
+  } catch (err) {
+    console.error("Connection failed:", err);
+  }
+  
+}
 // ==========================================
 // 1. CONTACT CONFIGURATION
 // ==========================================
@@ -474,4 +510,9 @@ window.addEventListener("click", (event) => {
 // Initialize on DOM Ready
 document.addEventListener("DOMContentLoaded", () => {
   renderTobademProperties("property-grid");
+});
+
+// Initialize on DOM Ready - Fetch live data from Supabase
+document.addEventListener("DOMContentLoaded", () => {
+  fetchPropertiesFromSupabase();
 });
