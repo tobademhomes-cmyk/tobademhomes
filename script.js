@@ -477,4 +477,4 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTobademProperties("property-grid");
 });
 
-}
+
