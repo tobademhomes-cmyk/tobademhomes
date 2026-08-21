@@ -477,7 +477,4 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTobademProperties("property-grid");
 });
 
-// Initialize on DOM Ready - Fetch live data from Supabase
-document.addEventListener("DOMContentLoaded", () => {
-  fetchPropertiesFromSupabase();
-});
+
