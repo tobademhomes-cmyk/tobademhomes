@@ -3,7 +3,6 @@
  * Includes Property Listing Engine, Location Filtering, and Dynamic Blog Modal System
  */
 
-}
 // ==========================================
 // 1. CONTACT CONFIGURATION
 // ==========================================
@@ -17,7 +16,7 @@ const properties = [
     id: 1,
     title: "3-Bedroom Semi-Detached Duplex",
     location: "BlueStone Estate, Mowe Ofada, Ogun State",
-    type: "Commercial & Residential Land",
+    type: "Smart Homes",
     price: "₦165,000,000",
     initialDeposit: "₦33,000,000",
     paymentPlan: "Flexible Spread Available",
@@ -28,7 +27,7 @@ const properties = [
     id: 2,
     title: "3-Bedroom Bungalow with a Room BQ (Semi-finished)",
     location: "BlueStone Estate, Mowe Ofada, Ogun State",
-    type: "Land & Housing Units",
+    type: "3-Bedroom Bungalow + BQ",
     price: "₦65,000,000 (Land)",
     initialDeposit: "₦5,000,000",
     paymentPlan: "Up to 12 Months",
@@ -39,18 +38,18 @@ const properties = [
     id: 3,
     title: "2-Bedroom Apartment (Semi-Finished)",
     location: "Treasure Island Phase 1, Mowe Ofada, Ogun State",
-    type: "Residential Land Plots",
-    price: "₦15,500,000",
+    type: "Smart Homes",
+    price: "₦25,000,000",
     initialDeposit: "₦2,500,000",
     paymentPlan: "6 - 12 Months",
-    features: ["100% Dry Tableland", "C of O Processing in Progress", "Rapid Capital Growth Zone"],
+    features: ["Secure Perimeter Fencing", "C of O ", "Rapid Capital Growth Zone"],
     imageUrl: "images/treasure2.jpeg"
   },
   {
     id: 4,
     title: "2-Bedroom Bungalow",
     location: "Mowe Ofada, Ogun State",
-    type: "Apartments & Semi-Detached",
+    type: "Smart Homes",
     price: "₦47,000,000",
     initialDeposit: "₦5,000,000",
     paymentPlan: "Flexible Installments",
@@ -77,7 +76,7 @@ const properties = [
     initialDeposit: "₦3,000,000",
     paymentPlan: "Outright (₦75M) | 6M (₦80M) | 12M (₦85M)",
     features: ["Integrated Rooftop Solar Panels", "Recyclable Eco Finishes", "Fully Fitted Appliances"],
-    imageUrl: "./images/aramide1.jpeg"
+    imageUrl: "images/aramide1.jpeg"
   },
   {
     id: 7,
@@ -105,7 +104,7 @@ const properties = [
     id: 9,
     title: "The Bolton Height",
     location: "The Nest, Lekki Phase 1, Lagos",
-    type: "Ultra-Luxury 2-Bedroom Apartment",
+    type: "Luxury 2-Bedroom Apartment",
     price: "₦270,000,000",
     initialDeposit: "₦20,000,000",
     paymentPlan: "12 Months Interest-Free",
@@ -138,7 +137,7 @@ const properties = [
     id: 12,
     title: "Co-Buy to Resell 3.0 (RECBCOOP)",
     location: "Prime Lagos & Ogun Asset Portfolios",
-    type: "Fractional Investment & Real Estate Cashback",
+    type: "Real Estate Cashback",
     price: "₦1,000,000 Minimum Entry",
     initialDeposit: "Full Equity Contribution",
     paymentPlan: "12 Months Investment Tenor",
@@ -476,5 +475,3 @@ window.addEventListener("click", (event) => {
 document.addEventListener("DOMContentLoaded", () => {
   renderTobademProperties("property-grid");
 });
-
-
