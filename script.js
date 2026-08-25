@@ -3,6 +3,13 @@
  * Includes Property Listing Engine, Location Filtering, and Dynamic Blog Modal System
  */
 
+// 1. Your Supabase Credentials
+const SUPABASE_URL = 'https://esgszouxueqpgepwpyqk.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZ3N6b3V4dWVxcGdlcHdweXFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjE4MTYsImV4cCI6MjEwMjg5NzgxNn0.ullcb5NuaENW8577va_FyFDsGw6pO1GPDt2WfgG_6GE';
+
+// 2. Connect your app to Supabase
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 // ==========================================
 // 1. CONTACT CONFIGURATION
 // ==========================================
@@ -475,3 +482,20 @@ window.addEventListener("click", (event) => {
 document.addEventListener("DOMContentLoaded", () => {
   renderTobademProperties("property-grid");
 });
+
+// 3. Test function to fetch your data
+async function testSupabaseConnection() {
+  const { data, error } = await supabaseClient
+    .from('properties') 
+    .select('*');
+
+  if (error) {
+    console.error('❌ Connection Failed:', error.message);
+    return;
+  }
+
+  console.log('✅ SUCCESS! Here are your products:', data);
+}
+
+// 4. Run the test function
+testSupabaseConnection();
