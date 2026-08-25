@@ -23,6 +23,23 @@ let activeFilter = "All";
 // ==========================================
 
 /**
+ * Helper function: Converts Google Drive viewing links into direct image URLs.
+ */
+function formatImageUrl(rawUrl) {
+  if (!rawUrl) return "images/default-property.jpg";
+
+  // Check if it's a standard Google Drive file URL
+  if (rawUrl.includes("drive.google.com")) {
+    const match = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match && match[1]) {
+      return `https://lh3.googleusercontent.com/d/${match[1]}`;
+    }
+  }
+
+  return rawUrl;
+}
+
+/**
  * Main function to fetch properties directly from your Supabase 'properties' table.
  */
 async function fetchPropertiesFromSupabase(containerId = "property-grid") {
@@ -102,7 +119,10 @@ function renderTobademProperties(containerId = "property-grid") {
       const type = prop.type || "Real Estate";
       const price = prop.price || "Price on Request";
       const initialDeposit = prop.initialDeposit || prop.initial_deposit || "Contact Agent";
-      const imageUrl = prop.imageUrl || prop.image_url || "images/default-property.jpg";
+      
+      // Auto-converts Google Drive links to direct streaming image URLs
+      const rawImageUrl = prop.imageUrl || prop.image_url;
+      const imageUrl = formatImageUrl(rawImageUrl);
       
       // Parse features (handles array or string format from database)
       let featureList = [];
@@ -125,7 +145,7 @@ function renderTobademProperties(containerId = "property-grid") {
               alt="${title}" 
               loading="lazy" 
               class="card-img"
-              onerror="this.onerror=null; this.style.display='none';"
+              onerror="this.onerror=null; this.src='images/default-property.jpg';"
             />
             <span class="card-badge">${type}</span>
             <div class="verification-seal">
