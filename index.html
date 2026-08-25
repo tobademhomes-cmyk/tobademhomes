@@ -61,7 +61,6 @@
         <li><a href="#about">About Us</a></li>
         <li><a href="#why-us">Why Us</a></li>
         <li><a href="#ceo">Meet CEO</a></li>
-        <li><a href="#team">Our Team</a></li>
         <li><a href="#partners">Partners</a></li>
         <li><a href="#properties">Properties</a></li>
         <li><a href="#testimonials">Reviews</a></li>
@@ -110,7 +109,7 @@
   <section id="ceo" class="container">
     <div class="ceo-wrapper">
       <div class="ceo-image-container">
-        <img src="images/ceo-photo.jpeg" alt="Adelugbin Michael Tobi - CEO Tobadem Homes" class="ceo-img">
+        <img src="images/ceo-1.jpeg" alt="Adelugbin Michael Tobi - CEO Tobadem Homes" class="ceo-img">
         <div class="ceo-badge">Founder & CEO</div>
       </div>
       
@@ -147,24 +146,6 @@
     </div>
   </section>
 
-  <!-- Meet Our Team Section -->
-  <section id="team" class="container bg-light">
-    <div class="section-header">
-      <span class="category">Our Experts</span>
-      <h2>Meet Our Team</h2>
-      <p>The dedicated professionals securing your real estate investments and conducting rigorous due diligence.</p>
-    </div>
-
-    <div class="team-carousel-container">
-      <button class="team-nav-btn" id="teamNextBtn" aria-label="Next Team Member">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-      
-      <div class="team-track" id="teamTrack">
-        <!-- Team cards are rendered dynamically via script.js -->
-      </div>
-    </div>
-  </section>
 
   <!-- Partners & Marketed Developers Section (Side-by-Side Names Only) -->
   <section id="partners" class="container bg-light">
@@ -284,18 +265,12 @@
       <p>Schedule an inspection or speak with an expert property consultant.</p>
     </div>
     
-    <div class="contact-details-box" style="text-align: center; margin-bottom: 2rem;">
-      <p><strong>📍 Head Office:</strong> Torotoro Junction, Mowe, Ogun State, Nigeria</p>
-      <p><strong>📧 Email:</strong> tobademhomes@gmail.com | <strong>📱 WhatsApp:</strong> +234 810 900 5495</p>
-    </div>
-
     <div class="contact-wrapper">
       <form class="contact-form" action="https://formspree.io/f/xkjwpkge" method="POST" id="inquiryForm">
         <input type="hidden" name="_subject" value="New Website Lead - Tobadem Homes">
         
         <input type="text" name="name" id="name" placeholder="Full Name" required>
-        <input type="email" name="_replyto" id="email" placeholder="Email Address" required>
-        <input type="tel" name="phone" id="phone" placeholder="WhatsApp / Phone Number" required>
+        <input type="tel" name="phone" id="phone" placeholder="Phone Number" required>
         <textarea name="message" id="message" rows="4" placeholder="How can Tobadem Homes assist you today?" required></textarea>
         
         <button type="submit" class="btn-primary">Send Email Inquiry</button>
