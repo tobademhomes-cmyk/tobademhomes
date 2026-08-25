@@ -1,6 +1,6 @@
 /**
  * TOBADEM HOMES - MASTER JAVASCRIPT
- * Includes Dynamic Supabase Property Engine, Location Filtering, and Blog Modal System
+ * Includes Dynamic Supabase Property Engine, Compact Card UI, Location Filtering, and Blog Modal System
  */
 
 // ==========================================
@@ -73,7 +73,7 @@ async function fetchPropertiesFromSupabase(containerId = "property-grid") {
 }
 
 /**
- * Handles filtering and rendering HTML cards onto the DOM.
+ * Handles filtering and rendering compact HTML cards onto the DOM.
  */
 function renderTobademProperties(containerId = "property-grid") {
   const container = document.getElementById(containerId);
@@ -108,90 +108,120 @@ function renderTobademProperties(containerId = "property-grid") {
     ? globalProperties 
     : globalProperties.filter(p => p.location && p.location.toLowerCase().includes(activeFilter.toLowerCase()));
 
-  // 4. Render property cards into grid
+  // 4. Render compact property cards into grid
   if (filteredProps.length === 0) {
     container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No properties currently listed in ${activeFilter}.</p>`;
   } else {
     container.innerHTML = filteredProps.map(prop => {
-      // Safe fallback formatting for values coming from DB
+      // Safe extractions for DB columns (handles both camelCase and snake_case)
       const title = prop.title || "Featured Property";
       const location = prop.location || "Lagos, Nigeria";
-      const type = prop.type || "Real Estate";
       const price = prop.price || "Price on Request";
-      const initialDeposit = prop.initialDeposit || prop.initial_deposit || "Contact Agent";
       
-      // Auto-converts Google Drive links to direct streaming image URLs
+      // Payment Plan & Initial Deposit fields
+      const rawDeposit = prop.initial_deposit || prop.initialDeposit;
+      const initialDeposit = rawDeposit ? `Initial Deposit: <strong>${rawDeposit}</strong>` : '';
+      
+      const paymentPlan = prop.payment_plan || prop.paymentPlan || prop.paymentplan;
+
+      // Image URL formatting
       const rawImageUrl = prop.imageUrl || prop.image_url;
       const imageUrl = formatImageUrl(rawImageUrl);
-      
-      // Parse features (handles array or string format from database)
+
+      // --- ADVANCED FEATURE LIST PARSER (JSONB, Array, or String) ---
       let featureList = [];
-      if (Array.isArray(prop.features)) {
-        featureList = prop.features;
-      } else if (typeof prop.features === 'string') {
-        featureList = prop.features.split(',').map(f => f.trim());
-      } else {
-        featureList = ["Verified Title", "Prime Location"];
+      const rawFeatures = prop.features;
+
+      if (rawFeatures) {
+        if (Array.isArray(rawFeatures)) {
+          // Parsed JavaScript Array (standard JSONB return)
+          featureList = rawFeatures;
+        } else if (typeof rawFeatures === 'string') {
+          const trimmed = rawFeatures.trim();
+          
+          if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+            // Stringified JSON Array: '["Feature 1", "Feature 2"]'
+            try {
+              featureList = JSON.parse(trimmed);
+            } catch (err) {
+              console.error("JSON parse error for features:", err);
+            }
+          } else if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+            // Postgres array string format: '{"Feature 1", "Feature 2"}'
+            featureList = trimmed.slice(1, -1).split(',').map(item => item.replace(/^"|"$/g, '').trim());
+          } else if (trimmed.length > 0) {
+            // Standard comma-separated string format
+            featureList = trimmed.split(',').map(f => f.trim()).filter(f => f.length > 0);
+          }
+        }
       }
 
+      // WhatsApp action text link
       const waText = encodeURIComponent(`Hello Tobadem Homes, I want to verify the title and request inspection details for ${title} (${location}).`);
       const waLink = `https://wa.me/${TOBADEM_WHATSAPP}?text=${waText}`;
 
       return `
-        <article class="property-card" data-id="${prop.id}">
-          <div class="card-image-wrapper">
+        <article class="property-card" data-id="${prop.id}" style="background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #e5e7eb; display: flex; flex-direction: column;">
+          
+          <!-- Image Container with Floating Verified Badge -->
+          <div class="card-image-wrapper" style="position: relative; height: 190px; overflow: hidden;">
             <img 
               src="${imageUrl}" 
               alt="${title}" 
               loading="lazy" 
-              class="card-img"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
               onerror="this.onerror=null; this.src='images/default-property.jpg';"
             />
-            <span class="card-badge">${type}</span>
-            <div class="verification-seal">
-              <svg viewBox="0 0 24 24" class="seal-icon"><path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-5.45 9-12V5l-9-4zm-2 16l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            <div style="position: absolute; bottom: 12px; right: 12px; background: #059669; color: #ffffff; font-weight: 600; font-size: 0.8rem; padding: 6px 14px; border-radius: 6px; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+              <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: currentColor;"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-5.45 9-12V5l-9-4zm-2 16l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
               Verified Title
             </div>
           </div>
           
-          <div class="card-body">
-            <div class="card-header-info">
-              <h3 class="card-title">${title}</h3>
-              <p class="card-location">
-                <svg class="loc-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5-2.5 2.5z"/></svg>
+          <!-- Card Content Body -->
+          <div class="card-body" style="padding: 1.25rem; display: flex; flex-direction: column; flex-grow: 1; gap: 0.75rem;">
+            
+            <!-- Header Info -->
+            <div>
+              <h3 style="font-size: 1.25rem; font-weight: 700; color: #111827; margin: 0 0 0.35rem 0; line-height: 1.3;">${title}</h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0; display: flex; align-items: center; gap: 5px;">
+                <svg style="width: 14px; height: 14px; fill: #6b7280;" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5-2.5 2.5z"/></svg>
                 ${location}
               </p>
             </div>
 
-            <div class="card-pricing-block">
-              <div class="price-main">
-                <span class="price-label">Price / Investment</span>
-                <span class="price-value">${price}</span>
-              </div>
-              <div class="deposit-tag">
-                <span>Initial Deposit:</span> <strong>${initialDeposit}</strong>
-              </div>
+            <!-- Compact Pricing Highlight Box -->
+            <div style="background: #f9fafb; border-radius: 8px; padding: 0.85rem 1rem;">
+              <span style="display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: #6b7280; letter-spacing: 0.5px; margin-bottom: 0.25rem;">PRICE / INVESTMENT</span>
+              <div style="font-size: 1.25rem; font-weight: 800; color: #d97706; margin-bottom: 0.2rem;">${price}</div>
+              ${initialDeposit ? `<div style="font-size: 0.875rem; color: #374151;">${initialDeposit}</div>` : ''}
+              ${paymentPlan ? `<div style="font-size: 0.875rem; color: #374151; margin-top: 0.2rem;">Payment Plan: <strong>${paymentPlan}</strong></div>` : ''}
             </div>
 
-            <ul class="card-features-list">
-              ${featureList.map(feat => `
-                <li>
-                  <span class="check-icon">✓</span>
-                  <span>${feat}</span>
-                </li>
-              `).join('')}
-            </ul>
+            <!-- Features Check List -->
+            ${featureList.length > 0 ? `
+              <ul style="list-style: none; padding: 0; margin: 0.25rem 0 0.5rem 0; display: flex; flex-direction: column; gap: 0.4rem;">
+                ${featureList.map(feat => `
+                  <li style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.9rem; color: #374151;">
+                    <span style="color: #16a34a; font-weight: 700; line-height: 1.2;">✓</span>
+                    <span>${feat}</span>
+                  </li>
+                `).join('')}
+              </ul>
+            ` : ''}
 
-            <div class="card-footer-action">
+            <!-- CTA Action Button -->
+            <div style="margin-top: auto; padding-top: 0.5rem;">
               <a 
                 href="${waLink}" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                class="btn-verify-action"
+                style="display: block; width: 100%; text-align: center; background: #16a34a; color: #ffffff; font-weight: 700; padding: 0.85rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.95rem; transition: background 0.2s;"
               >
                 Verify Title & Request Inspection
               </a>
             </div>
+
           </div>
         </article>
       `;
