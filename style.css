@@ -408,12 +408,12 @@ header {
   box-shadow: var(--shadow-md);
 }
 
-/* Strictly controlled compact image height */
+/* Uniform, enlarged flyer container height for high visibility */
 .card-image-wrapper {
   position: relative;
-  height: 130px !important;
-  min-height: 130px !important;
-  max-height: 130px !important;
+  height: 220px !important;
+  min-height: 220px !important;
+  max-height: 220px !important;
   overflow: hidden;
   background-color: #f1f5f9;
 }
@@ -422,7 +422,7 @@ header {
 .card-img {
   width: 100% !important;
   height: 100% !important;
-  max-height: 130px !important;
+  max-height: 220px !important;
   object-fit: cover !important;
   object-position: center !important;
   display: block !important;
