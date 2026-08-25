@@ -1,217 +1,72 @@
 /**
  * TOBADEM HOMES - MASTER JAVASCRIPT
- * Includes Property Listing Engine, Team Gallery Engine, Location Filtering, Reviews Slider, and Dynamic Modal Systems
+ * Includes Supabase Dynamic Property Engine, Location Filtering, Reviews Slider, Dynamic Modal Systems, and Inquiry Form Handler
  */
 
 // ==========================================
-// 1. CONTACT CONFIGURATION
+// 1. CONTACT & SUPABASE CONFIGURATION
 // ==========================================
 const TOBADEM_WHATSAPP = "2348109005495";
 
-// ==========================================
-// 2. TEAM MEMBERS DATABASE (EDIT NAMES, TITLES, & IMAGE PATHS HERE)
-// ==========================================
-const teamMembers = [
-  {
-    id: 1,
-    name: "Adelugbin Michael Tobi",
-    designation: "CEO & Founder",
-    imageUrl: "images/ceo-photo.jpeg" // <--- Update image path here
-  },
-  {
-    id: 2,
-    name: "Legal Advisory Team",
-    designation: "Property Title Verification",
-    imageUrl: "images/team-legal.jpeg" // <--- Update image path here
-  },
-  {
-    id: 3,
-    name: "Acquisitions Team",
-    designation: "Land Banking Strategy",
-    imageUrl: "images/team-acquisitions.jpeg" // <--- Update image path here
-  }
-];
+// Configured Supabase Credentials
+const SUPABASE_URL = "https://esgszouxueqpgepwpyqk.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZ3N6b3V4dWVxcGdlcHdweXFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjE4MTYsImV4cCI6MjEwMjg5NzgxNn0.ullcb5NuaENW8577va_FyFDsGw6pO1GPDt2WfgG_6GE";
 
-// ==========================================
-// 3. PROPERTY DATABASE
-// ==========================================
-const properties = [
-  {
-    id: 1,
-    title: "3-Bedroom Semi-Detached Duplex",
-    location: "BlueStone Estate, Mowe Ofada, Ogun State",
-    type: "Smart Homes",
-    price: "₦165,000,000",
-    initialDeposit: "₦33,000,000",
-    paymentPlan: "Flexible Spread Available",
-    features: ["Prime Expressway Frontage", "High ROI Commercial Corridor", "Instant Physical Allocation"],
-    imageUrl: "images/fortune-pairs.jpeg"
-  },
-  {
-    id: 2,
-    title: "3-Bedroom Bungalow with a Room BQ (Semi-finished)",
-    location: "BlueStone Estate, Mowe Ofada, Ogun State",
-    type: "3-Bedroom Bungalow + BQ",
-    price: "₦65,000,000 (Land)",
-    initialDeposit: "₦5,000,000",
-    paymentPlan: "Up to 12 Months",
-    features: ["Secure Perimeter Fencing", "Paved Estate Road Network", "Dedicated Electricity Infrastructure"],
-    imageUrl: "images/3-bedroom-bluestone.jpeg"
-  },
-  {
-    id: 3,
-    title: "2-Bedroom Apartment (Semi-Finished)",
-    location: "Treasure Island Phase 1, Mowe Ofada, Ogun State",
-    type: "Smart Homes",
-    price: "₦25,000,000",
-    initialDeposit: "₦2,500,000",
-    paymentPlan: "6 - 12 Months",
-    features: ["Secure Perimeter Fencing", "C of O", "Rapid Capital Growth Zone"],
-    imageUrl: "images/treasure2.jpeg"
-  },
-  {
-    id: 4,
-    title: "2-Bedroom Bungalow",
-    location: "Mowe Ofada, Ogun State",
-    type: "Smart Homes",
-    price: "₦47,000,000",
-    initialDeposit: "₦5,000,000",
-    paymentPlan: "Flexible Installments",
-    features: ["Gated Security Community", "24/7 Monitored Surveillance", "Fully Paved Access Roads"],
-    imageUrl: "images/queen1.jpeg"
-  },
-  {
-    id: 5,
-    title: "1-Bedroom Apartment",
-    location: "Abijo, Lekki, Lagos",
-    type: "Smart Apartments & Terraces",
-    price: "₦65,000,000",
-    initialDeposit: "₦5,000,000",
-    paymentPlan: "Up to 18 Months",
-    features: ["Full Smart Home Automation", "Solar Energy Integration", "Biometric & Keyless Security"],
-    imageUrl: "images/avocado1.jpeg"
-  },
-  {
-    id: 6,
-    title: "Arámìdé Bungalow",
-    location: "Aiyetoro, Ibeju-Lekki, Lagos",
-    type: "3-Bedroom Bungalow + BQ",
-    price: "₦75,000,000",
-    initialDeposit: "₦3,000,000",
-    paymentPlan: "Outright (₦75M) | 6M (₦80M) | 12M (₦85M)",
-    features: ["Integrated Rooftop Solar Panels", "Recyclable Eco Finishes", "Fully Fitted Appliances"],
-    imageUrl: "images/aramide1.jpeg"
-  },
-  {
-    id: 7,
-    title: "Luxury Suite Apartments",
-    location: "Ilasamaja Road, Mushin, Lagos",
-    type: "Luxury 2-Bedroom Apartment",
-    price: "₦85,000,000",
-    initialDeposit: "Flexible Terms",
-    paymentPlan: "0-3M Outright | 3-6M | 6-12M Installments",
-    features: ["Smart Door Locks & Automation", "Dedicated Inverter System", "Italian Marble Kitchen Counters"],
-    imageUrl: "images/mushin1.jpeg"
-  },
-  {
-    id: 8,
-    title: "Cocoa RepubliQ",
-    location: "Shapala, Obafemi Owode, Ogun State",
-    type: "Agro-Real Estate & Land Banking",
-    price: "₦4,000,000 per Acre",
-    initialDeposit: "₦500,000",
-    paymentPlan: "0-3 Months Interest-Free | 6 Months (₦4.5M)",
-    features: ["Fully Managed Cocoa Farm Asset", "Passive Retirement Yield", "Est. ₦5M-₦8M Annual Dividend"],
-    imageUrl: "images/cocoa1.jpeg"
-  },
-  {
-    id: 9,
-    title: "The Bolton Height",
-    location: "The Nest, Lekki Phase 1, Lagos",
-    type: "Luxury 2-Bedroom Apartment",
-    price: "₦270,000,000",
-    initialDeposit: "₦20,000,000",
-    paymentPlan: "12 Months Interest-Free",
-    features: ["Electric Vehicle Charging Ports", "Automated Smart Home Controls", "Olympic Swimming Pool & Gym"],
-    imageUrl: "images/bolton1.jpeg"
-  },
-  {
-    id: 10,
-    title: "Champions Court",
-    location: "Igbodu, Epe, Lagos",
-    type: "500sqm Land Plot",
-    price: "₦14,000,000 (All-Inclusive)",
-    initialDeposit: "₦2,000,000",
-    paymentPlan: "Balance Spread Over 6 Months",
-    features: ["Full Perimeter Fencing", "24/7 Live CCTV Network", "Adjacent to Lagos Film City & Food Hub"],
-    imageUrl: "images/champions-court1.jpeg"
-  },
-  {
-    id: 11,
-    title: "Glamour Estate",
-    location: "Epe Corridor, Lagos",
-    type: "500sqm Land Plot",
-    price: "₦5,000,000 (Valued at ₦6,000,000)",
-    initialDeposit: "₦1,000,000",
-    paymentPlan: "Balance Spread Over 6 Months",
-    features: ["Access Card Gate House System", "Eco-Friendly Infrastructure", "Opposite St. Augustine University"],
-    imageUrl: "images/glamour1.jpeg"
-  },
-  {
-    id: 12,
-    title: "Co-Buy to Resell 3.0 (RECBCOOP)",
-    location: "Prime Lagos & Ogun Asset Portfolios",
-    type: "Real Estate Cashback",
-    price: "₦1,000,000 Minimum Entry",
-    initialDeposit: "Full Equity Contribution",
-    paymentPlan: "12 Months Investment Tenor",
-    features: ["35% Annual Yield (₦1M - ₦100M)", "37% Annual Yield (₦101M - ₦1B)", "Fully Asset-Backed Capital Growth"],
-    imageUrl: "images/co-buy1.jpeg"
-  }
-];
+// Initialize Supabase Client using 'dbClient' to prevent global naming conflicts
+const dbClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 let activeFilter = "All";
+let properties = [];
 
 // ==========================================
-// 4. TEAM MEMBERS RENDERER (SIDE-BY-SIDE LAYOUT)
+// 2. DYNAMIC PROPERTY FETCHING FROM SUPABASE
 // ==========================================
-function renderTeamMembers(containerId = "teamTrack") {
-  const container = document.getElementById(containerId);
-  if (!container) return;
+async function fetchPropertiesFromSupabase() {
+  if (!dbClient) {
+    console.error("Supabase client is not initialized. Ensure the CDN script is included in your HTML head.");
+    return [];
+  }
 
-  // Apply horizontal side-by-side flex layout directly
-  container.style.display = "flex";
-  container.style.flexDirection = "row";
-  container.style.gap = "1.5rem";
-  container.style.overflowX = "auto";
-  container.style.padding = "1rem 0";
-  container.style.scrollBehavior = "smooth";
+  try {
+    const { data, error } = await dbClient
+      .from('properties')
+      .select('*');
 
-  container.innerHTML = teamMembers.map(member => `
-    <article class="team-card" style="flex: 0 0 280px; max-width: 280px; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); text-align: center; border: 1px solid #e2e8f0;">
-      <div class="team-image-wrapper" style="width: 100%; height: 280px; overflow: hidden; background: #f8fafc;">
-        <img 
-          src="${member.imageUrl}" 
-          alt="${member.name}" 
-          loading="lazy" 
-          style="width: 100%; height: 100%; object-fit: cover; display: block;"
-          onerror="this.onerror=null; this.src='images/ceo-photo.jpeg';"
-        />
-      </div>
-      <div class="team-card-body" style="padding: 1.25rem 1rem;">
-        <h3 class="team-name" style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin-bottom: 0.3rem;">${member.name}</h3>
-        <p class="team-designation" style="font-size: 0.9rem; color: #2563eb; font-weight: 600; margin: 0;">${member.designation}</p>
-      </div>
-    </article>
-  `).join('');
+    if (error) {
+      console.error("Error fetching properties from Supabase:", error.message);
+      return [];
+    }
+
+    // Map database columns to standard property object structure
+    return (data || []).map(item => ({
+      id: item.id,
+      title: item.title,
+      location: item.location,
+      type: item.type,
+      price: item.price,
+      initialDeposit: item.initial_deposit || item.initialDeposit,
+      paymentPlan: item.payment_plan || item.paymentPlan,
+      features: Array.isArray(item.features) ? item.features : (item.features ? JSON.parse(item.features) : []),
+      imageUrl: item.image_url || item.imageUrl
+    }));
+  } catch (err) {
+    console.error("Unexpected error connecting to Supabase:", err);
+    return [];
+  }
 }
 
 // ==========================================
-// 5. PROPERTY LISTING RENDERER
+// 3. PROPERTY LISTING RENDERER
 // ==========================================
-function renderTobademProperties(containerId = "property-grid") {
+async function renderTobademProperties(containerId = "property-grid") {
   const container = document.getElementById(containerId);
   if (!container) return;
+
+  // Show loading state and fetch from Supabase if properties array is empty
+  if (properties.length === 0) {
+    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">Loading verified properties...</p>`;
+    properties = await fetchPropertiesFromSupabase();
+  }
 
   // 1. Create or retrieve filter container
   let filterWrapper = document.getElementById("property-filter-buttons");
@@ -244,7 +99,7 @@ function renderTobademProperties(containerId = "property-grid") {
 
   // 4. Render property cards into grid
   if (filteredProps.length === 0) {
-    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No properties currently listed in ${activeFilter}.</p>`;
+    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No properties currently found in ${activeFilter}. (Ensure your table rows are populated in Supabase).</p>`;
   } else {
     container.innerHTML = filteredProps.map(prop => {
       const waText = encodeURIComponent(`Hello Tobadem Homes, I want to verify the title and request inspection details for ${prop.title} (${prop.location}).`);
@@ -287,7 +142,7 @@ function renderTobademProperties(containerId = "property-grid") {
             </div>
 
             <ul class="card-features-list" style="list-style: none; padding: 0; margin: 1rem 0; font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.4rem;">
-              ${prop.features.map(feat => `
+              ${(prop.features || []).map(feat => `
                 <li style="display: flex; align-items: center; gap: 6px;">
                   <span style="color: var(--brand-green); font-weight: bold;">✓</span>
                   <span>${feat}</span>
@@ -313,7 +168,7 @@ function renderTobademProperties(containerId = "property-grid") {
 }
 
 // ==========================================
-// 6. REVIEWS SLIDER CONTROLLER
+// 4. REVIEWS SLIDER CONTROLLER
 // ==========================================
 function setupReviewsSlider() {
   const track = document.getElementById("reviewsTrack");
@@ -334,7 +189,75 @@ function setupReviewsSlider() {
 }
 
 // ==========================================
-// 7. BLOG DATABASE & MODAL CONTROLLER
+// 5. INQUIRY FORM SUBMISSION HANDLER
+// ==========================================
+function setupInquiryForm() {
+  const form = document.getElementById("inquiryForm");
+  const feedback = document.getElementById("formFeedback");
+  const submitBtn = document.getElementById("submitBtn");
+
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Collect data mapping directly to your Supabase table columns: name, phone, message
+    const formData = new FormData(form);
+    const payload = {
+      name: formData.get("name"),
+      phone: formData.get("phone"),
+      message: formData.get("message")
+    };
+
+    // UI Loading State
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Submitting Request...";
+    }
+    if (feedback) {
+      feedback.innerText = "";
+      feedback.style.color = "inherit";
+    }
+
+    try {
+      if (!dbClient) {
+        throw new Error("Database client is not connected.");
+      }
+
+      // Insert directly into your Supabase 'inquiries' table
+      const { error } = await dbClient
+        .from('inquiries')
+        .insert([payload]);
+
+      if (error) throw error;
+
+      // Success Feedback (On-page text and popup alert)
+      if (feedback) {
+        feedback.style.color = "green";
+        feedback.innerText = "Success! Your request has been sent. We will get in touch shortly.";
+      }
+      
+      alert("Success! Your inquiry has been received by Tobadem Homes. We will contact you shortly.");
+      form.reset();
+
+    } catch (err) {
+      console.log("Submission error:", err.message);
+      if (feedback) {
+        feedback.style.color = "red";
+        feedback.innerText = "Submission failed: " + err.message;
+      }
+      alert("Submission failed: " + err.message);
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit Request";
+      }
+    }
+  });
+}
+
+// ==========================================
+// 6. BLOG DATABASE & MODAL CONTROLLER
 // ==========================================
 const blogPosts = {
   "c-of-o-vs-excision": {
@@ -346,32 +269,6 @@ const blogPosts = {
         When acquiring land in rapidly expanding commercial and residential hubs, long-term returns aren't determined by location alone—they depend on title security. Buying a prime plot with ambiguous documentation can turn projected capital appreciation into years of costly litigation.
       </p>
       <p>Understanding the structural differences between an <strong>Excision</strong> and a <strong>Certificate of Occupancy (C of O)</strong> is the single most critical step in protecting your property portfolio.</p>
-      
-      <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
-
-      <section>
-        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">What is an Excision?</h3>
-        <p>Under the Land Use Act of 1978, all land within a state is vested in the Governor to hold in trust for the populace. An <strong>Excision</strong> is the legal process where the state government officially carves out a specific portion of land from government acquisition and returns full legal control to the indigenous community or landowning family.</p>
-        <ul style="margin: 0.8rem 0 1rem 1.5rem;">
-          <li><strong>The Gazette:</strong> Once an excision is completed and approved, it is published in the official government record known as a <strong>Gazette</strong>.</li>
-          <li><strong>Investment Profile:</strong> Excised land provides clear title while usually entering the market at a more accessible price point than land with an individual C of O. This makes it an ideal vehicle for land banking and high-margin capital appreciation.</li>
-        </ul>
-      </section>
-
-      <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
-
-      <section>
-        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">What is a Certificate of Occupancy (C of O)?</h3>
-        <p>A <strong>Certificate of Occupancy</strong> is an official leasehold document issued directly by the State Government. It certifies that the named holder has exclusive ownership rights and land use authorization for a term of up to 99 years.</p>
-        <ul style="margin: 0.8rem 0 1rem 1.5rem;">
-          <li><strong>Primary Security:</strong> A C of O can be issued directly on state land or processed independently over excised family land.</li>
-          <li><strong>Institutional Leverage:</strong> Banks and financial institutions treat a C of O as prime collateral, making it easier to leverage for project financing or resale to institutional investors.</li>
-        </ul>
-      </section>
-
-      <blockquote style="background: var(--bg-light); border-left: 4px solid var(--accent); padding: 1rem; margin-top: 1.5rem; border-radius: 4px;">
-        <p><strong>Key Takeaway:</strong> Securing your investment starts with verified paper, not promise.</p>
-      </blockquote>
     `
   },
   "land-beats-inflation": {
@@ -380,24 +277,8 @@ const blogPosts = {
     date: "August 08, 2026",
     content: `
       <p class="lead-text" style="font-weight: 600; font-size: 1.1rem; color: var(--primary);">
-        When inflation steadily erodes local currency value and stock market volatility leaves traditional portfolios exposed, wealth preservation requires hard assets. Cash sitting in standard savings vehicles loses purchasing power every day, while traditional fixed-income yields often fail to keep pace with real inflation rates.
+        When inflation steadily erodes local currency value and stock market volatility leaves traditional portfolios exposed, wealth preservation requires hard assets.
       </p>
-      <p>Strategic land banking—acquiring undeveloped land in high-growth corridors before peak urbanization—stands out as one of the few asset classes that consistently outperforms inflation while delivering exponential capital appreciation.</p>
-
-      <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
-
-      <section>
-        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">The Mechanics of Inflation Protection</h3>
-        <p>Land is an inherently finite asset. Unlike fiat currency, state governments and developers cannot manufacture more real estate in high-demand economic hubs.</p>
-        <ul style="margin: 0.8rem 0 1rem 1.5rem;">
-          <li><strong>Scarcity-Driven Value:</strong> As population density expands into emerging corridors, land supply shrinks while demand surges. This built-in economic dynamic ensures land values reprice upward alongside inflation.</li>
-          <li><strong>Intrinsic Capital Preservation:</strong> Liquid assets depreciate as consumer prices rise, but raw land maintains intrinsic structural value. It is unaffected by corporate earnings misses, management failures, or short-term market speculation.</li>
-        </ul>
-      </section>
-
-      <blockquote style="background: var(--bg-light); border-left: 4px solid var(--accent); padding: 1rem; margin-top: 1.5rem; border-radius: 4px;">
-        <p><strong>Key Takeaway:</strong> Building generational wealth isn't about chasing speculative short-term trends; it is about anchoring capital into hard, appreciating assets that outpace currency debasement.</p>
-      </blockquote>
     `
   }
 };
@@ -462,6 +343,6 @@ window.addEventListener("keydown", (event) => {
 // Initialize on DOM Ready
 document.addEventListener("DOMContentLoaded", () => {
   renderTobademProperties("property-grid");
-  renderTeamMembers("teamTrack"); // Renders team cards side-by-side into #teamTrack
   setupReviewsSlider();
+  setupInquiryForm();
 });
