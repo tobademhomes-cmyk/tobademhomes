@@ -1,163 +1,63 @@
 /**
  * TOBADEM HOMES - MASTER JAVASCRIPT
- * Includes Property Listing Engine, Location Filtering, and Dynamic Blog Modal System
+ * Includes Dynamic Supabase Property Engine, Location Filtering, and Blog Modal System
  */
 
-// 1. Your Supabase Credentials
+// ==========================================
+// 1. SUPABASE CONFIGURATION
+// ==========================================
 const SUPABASE_URL = 'https://esgszouxueqpgepwpyqk.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZ3N6b3V4dWVxcGdlcHdweXFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjE4MTYsImV4cCI6MjEwMjg5NzgxNn0.ullcb5NuaENW8577va_FyFDsGw6pO1GPDt2WfgG_6GE';
 
-// 2. Connect your app to Supabase
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ==========================================
-// 1. CONTACT CONFIGURATION
+// 2. GLOBAL STATE & CONTACT CONFIG
 // ==========================================
 const TOBADEM_WHATSAPP = "2348109005495";
-
-// ==========================================
-// 2. PROPERTY DATABASE
-// ==========================================
-const properties = [
-  {
-    id: 1,
-    title: "3-Bedroom Semi-Detached Duplex",
-    location: "BlueStone Estate, Mowe Ofada, Ogun State",
-    type: "Smart Homes",
-    price: "₦165,000,000",
-    initialDeposit: "₦33,000,000",
-    paymentPlan: "Flexible Spread Available",
-    features: ["Prime Expressway Frontage", "High ROI Commercial Corridor", "Instant Physical Allocation"],
-    imageUrl: "images/fortune-pairs.jpeg"
-  },
-  {
-    id: 2,
-    title: "3-Bedroom Bungalow with a Room BQ (Semi-finished)",
-    location: "BlueStone Estate, Mowe Ofada, Ogun State",
-    type: "3-Bedroom Bungalow + BQ",
-    price: "₦65,000,000 (Land)",
-    initialDeposit: "₦5,000,000",
-    paymentPlan: "Up to 12 Months",
-    features: ["Secure Perimeter Fencing", "Paved Estate Road Network", "Dedicated Electricity Infrastructure"],
-    imageUrl: "images/3-bedroom-bluestone.jpeg"
-  },
-  {
-    id: 3,
-    title: "2-Bedroom Apartment (Semi-Finished)",
-    location: "Treasure Island Phase 1, Mowe Ofada, Ogun State",
-    type: "Smart Homes",
-    price: "₦25,000,000",
-    initialDeposit: "₦2,500,000",
-    paymentPlan: "6 - 12 Months",
-    features: ["Secure Perimeter Fencing", "C of O ", "Rapid Capital Growth Zone"],
-    imageUrl: "images/treasure2.jpeg"
-  },
-  {
-    id: 4,
-    title: "2-Bedroom Bungalow",
-    location: "Mowe Ofada, Ogun State",
-    type: "Smart Homes",
-    price: "₦47,000,000",
-    initialDeposit: "₦5,000,000",
-    paymentPlan: "Flexible Installments",
-    features: ["Gated Security Community", "24/7 Monitored Surveillance", "Fully Paved Access Roads"],
-    imageUrl: "images/queen1.jpeg"
-  },
-  {
-    id: 5,
-    title: "1-Bedroom Apartment",
-    location: "Abijo, Lekki, Lagos",
-    type: "Smart Apartments & Terraces",
-    price: "₦65,000,000",
-    initialDeposit: "₦5,000,000",
-    paymentPlan: "Up to 18 Months",
-    features: ["Full Smart Home Automation", "Solar Energy Integration", "Biometric & Keyless Security"],
-    imageUrl: "images/avocado1.jpeg"
-  },
-  {
-    id: 6,
-    title: "Arámìdé Bungalow",
-    location: "Aiyetoro, Ibeju-Lekki, Lagos",
-    type: "3-Bedroom Bungalow + BQ",
-    price: "₦75,000,000",
-    initialDeposit: "₦3,000,000",
-    paymentPlan: "Outright (₦75M) | 6M (₦80M) | 12M (₦85M)",
-    features: ["Integrated Rooftop Solar Panels", "Recyclable Eco Finishes", "Fully Fitted Appliances"],
-    imageUrl: "images/aramide1.jpeg"
-  },
-  {
-    id: 7,
-    title: "Luxury Suite Apartments",
-    location: "Ilasamaja Road, Mushin, Lagos",
-    type: "Luxury 2-Bedroom Apartment",
-    price: "₦85,000,000",
-    initialDeposit: "Flexible Terms",
-    paymentPlan: "0-3M Outright | 3-6M | 6-12M Installments",
-    features: ["Smart Door Locks & Automation", "Dedicated Inverter System", "Italian Marble Kitchen Counters"],
-    imageUrl: "images/mushin1.jpeg"
-  },
-  {
-    id: 8,
-    title: "Cocoa RepubliQ",
-    location: "Shapala, Obafemi Owode, Ogun State",
-    type: "Agro-Real Estate & Land Banking",
-    price: "₦4,000,000 per Acre",
-    initialDeposit: "₦500,000",
-    paymentPlan: "0-3 Months Interest-Free | 6 Months (₦4.5M)",
-    features: ["Fully Managed Cocoa Farm Asset", "Passive Retirement Yield", "Est. ₦5M-₦8M Annual Dividend"],
-    imageUrl: "images/cocoa1.jpeg"
-  },
-  {
-    id: 9,
-    title: "The Bolton Height",
-    location: "The Nest, Lekki Phase 1, Lagos",
-    type: "Luxury 2-Bedroom Apartment",
-    price: "₦270,000,000",
-    initialDeposit: "₦20,000,000",
-    paymentPlan: "12 Months Interest-Free",
-    features: ["Electric Vehicle Charging Ports", "Automated Smart Home Controls", "Olympic Swimming Pool & Gym"],
-    imageUrl: "images/bolton1.jpeg"
-  },
-  {
-    id: 10,
-    title: "Champions Court",
-    location: "Igbodu, Epe, Lagos",
-    type: "500sqm Land Plot",
-    price: "₦14,000,000 (All-Inclusive)",
-    initialDeposit: "₦2,000,000",
-    paymentPlan: "Balance Spread Over 6 Months",
-    features: ["Full Perimeter Fencing", "24/7 Live CCTV Network", "Adjacent to Lagos Film City & Food Hub"],
-    imageUrl: "images/champions-court1.jpeg"
-  },
-  {
-    id: 11,
-    title: "Glamour Estate",
-    location: "Epe Corridor, Lagos",
-    type: "500sqm Land Plot",
-    price: "₦5,000,000 (Valued at ₦6,000,000)",
-    initialDeposit: "₦1,000,000",
-    paymentPlan: "Balance Spread Over 6 Months",
-    features: ["Access Card Gate House System", "Eco-Friendly Infrastructure", "Opposite St. Augustine University"],
-    imageUrl: "images/glamour1.jpeg"
-  },
-  {
-    id: 12,
-    title: "Co-Buy to Resell 3.0 (RECBCOOP)",
-    location: "Prime Lagos & Ogun Asset Portfolios",
-    type: "Real Estate Cashback",
-    price: "₦1,000,000 Minimum Entry",
-    initialDeposit: "Full Equity Contribution",
-    paymentPlan: "12 Months Investment Tenor",
-    features: ["35% Annual Yield (₦1M - ₦100M)", "37% Annual Yield (₦101M - ₦1B)", "Fully Asset-Backed Capital Growth"],
-    imageUrl: "images/co-buy1.jpeg"
-  }
-];
-
+let globalProperties = []; // Stores properties fetched from Supabase
 let activeFilter = "All";
 
 // ==========================================
-// 3. PROPERTY LISTING RENDERER
+// 3. DYNAMIC SUPABASE PROPERTY ENGINE
 // ==========================================
+
+/**
+ * Main function to fetch properties directly from your Supabase 'properties' table.
+ */
+async function fetchPropertiesFromSupabase(containerId = "property-grid") {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  // Render temporary loading indicator
+  container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">Loading verified properties...</p>`;
+
+  try {
+    const { data, error } = await supabaseClient
+      .from('properties')
+      .select('*');
+
+    if (error) {
+      console.error('❌ Supabase Error:', error.message);
+      container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: red; padding: 2rem;">Failed to load properties. Please refresh or try again later.</p>`;
+      return;
+    }
+
+    console.log('✅ SUCCESS! Retrieved Data from Supabase:', data);
+    globalProperties = data || [];
+    
+    // Render the property cards and filter buttons once data arrives
+    renderTobademProperties(containerId);
+
+  } catch (err) {
+    console.error('❌ Network Error:', err);
+    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: red; padding: 2rem;">Network error fetching property data.</p>`;
+  }
+}
+
+/**
+ * Handles filtering and rendering HTML cards onto the DOM.
+ */
 function renderTobademProperties(containerId = "property-grid") {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -186,30 +86,48 @@ function renderTobademProperties(containerId = "property-grid") {
     }
   };
 
-  // 3. Filter properties list
+  // 3. Filter properties list from global database state
   const filteredProps = activeFilter === "All" 
-    ? properties 
-    : properties.filter(p => p.location.toLowerCase().includes(activeFilter.toLowerCase()));
+    ? globalProperties 
+    : globalProperties.filter(p => p.location && p.location.toLowerCase().includes(activeFilter.toLowerCase()));
 
   // 4. Render property cards into grid
   if (filteredProps.length === 0) {
     container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No properties currently listed in ${activeFilter}.</p>`;
   } else {
     container.innerHTML = filteredProps.map(prop => {
-      const waText = encodeURIComponent(`Hello Tobadem Homes, I want to verify the title and request inspection details for ${prop.title} (${prop.location}).`);
+      // Safe fallback formatting for values coming from DB
+      const title = prop.title || "Featured Property";
+      const location = prop.location || "Lagos, Nigeria";
+      const type = prop.type || "Real Estate";
+      const price = prop.price || "Price on Request";
+      const initialDeposit = prop.initialDeposit || prop.initial_deposit || "Contact Agent";
+      const imageUrl = prop.imageUrl || prop.image_url || "images/default-property.jpg";
+      
+      // Parse features (handles array or string format from database)
+      let featureList = [];
+      if (Array.isArray(prop.features)) {
+        featureList = prop.features;
+      } else if (typeof prop.features === 'string') {
+        featureList = prop.features.split(',').map(f => f.trim());
+      } else {
+        featureList = ["Verified Title", "Prime Location"];
+      }
+
+      const waText = encodeURIComponent(`Hello Tobadem Homes, I want to verify the title and request inspection details for ${title} (${location}).`);
       const waLink = `https://wa.me/${TOBADEM_WHATSAPP}?text=${waText}`;
 
       return `
         <article class="property-card" data-id="${prop.id}">
           <div class="card-image-wrapper">
             <img 
-              src="${prop.imageUrl}" 
-              alt="${prop.title}" 
+              src="${imageUrl}" 
+              alt="${title}" 
               loading="lazy" 
               class="card-img"
               onerror="this.onerror=null; this.style.display='none';"
             />
-            <span class="card-badge">${prop.type}</span>
+            <span class="card-badge">${type}</span>
             <div class="verification-seal">
               <svg viewBox="0 0 24 24" class="seal-icon"><path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-5.45 9-12V5l-9-4zm-2 16l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
               Verified Title
@@ -218,25 +136,25 @@ function renderTobademProperties(containerId = "property-grid") {
           
           <div class="card-body">
             <div class="card-header-info">
-              <h3 class="card-title">${prop.title}</h3>
+              <h3 class="card-title">${title}</h3>
               <p class="card-location">
                 <svg class="loc-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5-2.5 2.5z"/></svg>
-                ${prop.location}
+                ${location}
               </p>
             </div>
 
             <div class="card-pricing-block">
               <div class="price-main">
                 <span class="price-label">Price / Investment</span>
-                <span class="price-value">${prop.price}</span>
+                <span class="price-value">${price}</span>
               </div>
               <div class="deposit-tag">
-                <span>Initial Deposit:</span> <strong>${prop.initialDeposit}</strong>
+                <span>Initial Deposit:</span> <strong>${initialDeposit}</strong>
               </div>
             </div>
 
             <ul class="card-features-list">
-              ${prop.features.map(feat => `
+              ${featureList.map(feat => `
                 <li>
                   <span class="check-icon">✓</span>
                   <span>${feat}</span>
@@ -478,24 +396,10 @@ window.addEventListener("click", (event) => {
   }
 });
 
-// Initialize on DOM Ready
+// ==========================================
+// 5. APPLICATION INITIALIZATION
+// ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-  renderTobademProperties("property-grid");
+  // Trigger Supabase property fetch on page ready
+  fetchPropertiesFromSupabase("property-grid");
 });
-
-// 3. Test function to fetch your data
-async function testSupabaseConnection() {
-  const { data, error } = await supabaseClient
-    .from('properties') 
-    .select('*');
-
-  if (error) {
-    console.error('❌ Connection Failed:', error.message);
-    return;
-  }
-
-  console.log('✅ SUCCESS! Here are your products:', data);
-}
-
-// 4. Run the test function
-testSupabaseConnection();
