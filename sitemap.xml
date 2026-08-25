@@ -1,12 +1,405 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+/**
+ * TOBADEM HOMES - MASTER JAVASCRIPT
+ * Supabase Data Integration, Team Carousel, Formspree Handler & Article Modals
+ */
 
-  <!-- Main Website Homepage -->
-  <url>
-    <loc>https://tobademhomes.com/</loc>
-    <lastmod>2026-08-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.00</priority>
-  </url>
+// ==========================================
+// 1. SUPABASE & CONTACT CONFIGURATION
+// ==========================================
+const SUPABASE_URL = "https://esgszouxueqpgepwpyqk.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZ3N6b3V4dWVxcGdlcHdweXFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODczMjE4MTYsImV4cCI6MjEwMjg5NzgxNn0.ullcb5NuaENW8577va_FyFDsGw6pO1GPDt2WfgG_6GE";
 
-</urlset>
+// Initialize Supabase Client
+const _supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+const TOBADEM_WHATSAPP = "2348109005495";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORMSPREE_FORM_ID"; // <--- Replace with your Formspree ID
+
+// ==========================================
+// 2. TEAM MEMBERS DATABASE (IMAGE SLOTS)
+// ==========================================
+const teamMembers = [
+  {
+    id: 1,
+    name: "Adelugbin Michael Tobi",
+    designation: "Chief Executive Officer & Founder",
+    // -------------------------------------------------------------
+    // 📸 INSERT CEO IMAGE FILE PATH BELOW (e.g., "images/ceo-photo.jpeg")
+    // -------------------------------------------------------------
+    image: "images/ceo-photo.jpeg"
+  },
+  {
+    id: 2,
+    name: "Team Member Name",
+    designation: "Head of Property Sales & Strategy",
+    // -------------------------------------------------------------
+    // 📸 INSERT 2ND TEAM MEMBER IMAGE FILE PATH BELOW
+    // -------------------------------------------------------------
+    image: "images/team-2.jpeg"
+  },
+  {
+    id: 3,
+    name: "Team Member Name",
+    designation: "Legal Advisory & Title Verification",
+    // -------------------------------------------------------------
+    // 📸 INSERT 3RD TEAM MEMBER IMAGE FILE PATH BELOW
+    // -------------------------------------------------------------
+    image: "images/team-3.jpeg"
+  }
+];
+
+let currentTeamIndex = 0;
+
+function renderTeamCarousel() {
+  const track = document.getElementById("teamTrack");
+  if (!track) return;
+
+  track.innerHTML = teamMembers.map((member, index) => {
+    const isActive = index === currentTeamIndex ? "active" : "";
+    return `
+      <div class="team-card ${isActive}">
+        <div class="team-img-frame">
+          <img 
+            src="${member.image}" 
+            alt="${member.name}" 
+            loading="lazy"
+            onerror="this.onerror=null; this.src='https://via.placeholder.com/200?text=Tobadem+Team';"
+          />
+        </div>
+        <div class="team-info">
+          <h3>${member.name}</h3>
+          <p>${member.designation}</p>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function rotateTeamCarousel(direction = 1) {
+  currentTeamIndex = (currentTeamIndex + direction + teamMembers.length) % teamMembers.length;
+  renderTeamCarousel();
+}
+
+// ==========================================
+// 3. DYNAMIC SUPABASE PROPERTY LISTINGS
+// ==========================================
+let activeFilter = "All";
+let allProperties = [];
+
+async function fetchAndRenderProperties(containerId = "property-grid") {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  // 1. Create Filter Buttons
+  let filterWrapper = document.getElementById("property-filter-buttons");
+  if (!filterWrapper) {
+    filterWrapper = document.createElement("div");
+    filterWrapper.id = "property-filter-buttons";
+    filterWrapper.className = "filter-container";
+    container.parentNode.insertBefore(filterWrapper, container);
+  }
+
+  const categories = ["All", "Lagos", "Ogun State", "Ibadan"];
+  filterWrapper.innerHTML = categories.map(cat => `
+    <button class="filter-btn ${cat === activeFilter ? 'active' : ''}" data-location="${cat}">
+      ${cat}
+    </button>
+  `).join('');
+
+  filterWrapper.onclick = (e) => {
+    if (e.target.classList.contains("filter-btn")) {
+      activeFilter = e.target.getAttribute("data-location");
+      renderFilteredProperties(container);
+    }
+  };
+
+  // 2. Fetch live listings from Supabase
+  try {
+    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">Loading verified listings from database...</p>`;
+
+    if (!_supabase) {
+      throw new Error("Supabase SDK not loaded. Ensure CDN script tag is added to index.html");
+    }
+
+    const { data, error } = await _supabase
+      .from('properties')
+      .select('*');
+
+    if (error) throw error;
+
+    allProperties = data || [];
+    renderFilteredProperties(container);
+
+  } catch (err) {
+    console.error("Error fetching properties from Supabase:", err);
+    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: red; padding: 2rem;">Unable to load properties. Please try again later.</p>`;
+  }
+}
+
+function renderFilteredProperties(container) {
+  const filteredProps = activeFilter === "All" 
+    ? allProperties 
+    : allProperties.filter(p => p.location && p.location.toLowerCase().includes(activeFilter.toLowerCase()));
+
+  if (filteredProps.length === 0) {
+    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No properties currently listed in ${activeFilter}.</p>`;
+    return;
+  }
+
+  container.innerHTML = filteredProps.map(prop => {
+    const imageUrl = prop.image_url || prop.imageUrl || "https://via.placeholder.com/400x300?text=Tobadem+Homes";
+    const waText = encodeURIComponent(`Hello Tobadem Homes, I want to verify title and request inspection details for ${prop.title} (${prop.location}).`);
+    const waLink = `https://wa.me/${TOBADEM_WHATSAPP}?text=${waText}`;
+
+    let featuresList = [];
+    if (Array.isArray(prop.features)) {
+      featuresList = prop.features;
+    } else if (typeof prop.features === 'string') {
+      featuresList = prop.features.split(',');
+    }
+
+    return `
+      <article class="property-card" data-id="${prop.id}">
+        <div class="card-image-wrapper">
+          <img 
+            src="${imageUrl}" 
+            alt="${prop.title}" 
+            loading="lazy" 
+            class="card-img"
+            onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300?text=Tobadem+Homes';"
+          />
+          <span class="card-badge">${prop.type || 'Property'}</span>
+          <div class="verification-seal">
+            <svg viewBox="0 0 24 24" style="width:14px;height:14px;"><path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-5.45 9-12V5l-9-4zm-2 16l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+            Verified Title
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <div class="card-header-info">
+            <h3 class="card-title">${prop.title}</h3>
+            <p class="card-location">
+              <svg style="width:14px;height:14px;display:inline-block;vertical-align:middle;" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5-2.5 2.5z"/></svg>
+              ${prop.location}
+            </p>
+          </div>
+
+          <div class="card-pricing-block">
+            <div class="price-main">
+              <span class="price-label">Price / Investment</span>
+              <span class="price-value">${prop.price}</span>
+            </div>
+            ${prop.initial_deposit || prop.initialDeposit ? `
+              <div class="deposit-tag" style="font-size: 0.85rem; color: var(--text-dark); margin-top: 4px;">
+                <span>Initial Deposit:</span> <strong>${prop.initial_deposit || prop.initialDeposit}</strong>
+              </div>
+            ` : ''}
+          </div>
+
+          <ul class="card-features-list" style="list-style: none; padding: 0; margin: 1rem 0; font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.4rem;">
+            ${featuresList.map(feat => `
+              <li style="display: flex; align-items: center; gap: 6px;">
+                <span style="color: var(--brand-green); font-weight: bold;">✓</span>
+                <span>${feat.trim()}</span>
+              </li>
+            `).join('')}
+          </ul>
+
+          <div class="card-footer-action">
+            <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="btn-verify-action">
+              Verify Title & Request Inspection
+            </a>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+// ==========================================
+// 4. FORMSPREE SUBMISSION HANDLER
+// ==========================================
+function setupFormspreeHandler() {
+  const contactForm = document.getElementById("contactForm");
+  if (!contactForm) return;
+
+  contactForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const submitBtn = contactForm.querySelector("button[type='submit']");
+    const originalBtnText = submitBtn.innerText;
+    submitBtn.innerText = "Sending Request...";
+    submitBtn.disabled = true;
+
+    const formData = new FormData(contactForm);
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        alert("Thank you! Your advisory request has been sent successfully. Our team will contact you shortly.");
+        contactForm.reset();
+      } else {
+        alert("Oops! There was a problem submitting your request. Please try again or reach out on WhatsApp.");
+      }
+    } catch (error) {
+      alert("Network error. Please check your connection and try again.");
+    } finally {
+      submitBtn.innerText = originalBtnText;
+      submitBtn.disabled = false;
+    }
+  });
+}
+
+// ==========================================
+// 5. REVIEWS SLIDER CONTROLLER
+// ==========================================
+function setupReviewsSlider() {
+  const track = document.getElementById("reviewsTrack");
+  const leftBtn = document.getElementById("slideLeft");
+  const rightBtn = document.getElementById("slideRight");
+
+  if (!track || !leftBtn || !rightBtn) return;
+
+  const scrollAmount = 320;
+  leftBtn.addEventListener("click", () => track.scrollBy({ left: -scrollAmount, behavior: "smooth" }));
+  rightBtn.addEventListener("click", () => track.scrollBy({ left: scrollAmount, behavior: "smooth" }));
+}
+
+// ==========================================
+// 6. BLOG DATABASE & MODAL CONTROLLER
+// ==========================================
+const blogPosts = {
+  "c-of-o-vs-excision": {
+    category: "Land Banking",
+    title: "Understanding C of O vs. Excision in Land Titles",
+    date: "August 15, 2026",
+    content: `
+      <p class="lead-text" style="font-weight: 600; font-size: 1.1rem; color: var(--primary);">
+        When acquiring land in rapidly expanding commercial and residential hubs, long-term returns aren't determined by location alone—they depend on title security. Buying a prime plot with ambiguous documentation can turn projected capital appreciation into years of costly litigation.
+      </p>
+      <p>Understanding the structural differences between an <strong>Excision</strong> and a <strong>Certificate of Occupancy (C of O)</strong> is the single most critical step in protecting your property portfolio.</p>
+      
+      <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+      <section>
+        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">What is an Excision?</h3>
+        <p>Under the Land Use Act of 1978, all land within a state is vested in the Governor to hold in trust for the populace. An <strong>Excision</strong> is the legal process where the state government officially carves out a specific portion of land from government acquisition and returns full legal control to the indigenous community or landowning family.</p>
+        <ul style="margin: 0.8rem 0 1rem 1.5rem;">
+          <li><strong>The Gazette:</strong> Once an excision is completed and approved, it is published in the official government record known as a <strong>Gazette</strong>.</li>
+          <li><strong>Investment Profile:</strong> Excised land provides clear title while usually entering the market at a more accessible price point than land with an individual C of O. This makes it an ideal vehicle for land banking and high-margin capital appreciation.</li>
+        </ul>
+      </section>
+
+      <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+      <section>
+        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">What is a Certificate of Occupancy (C of O)?</h3>
+        <p>A <strong>Certificate of Occupancy</strong> is an official leasehold document issued directly by the State Government. It certifies that the named holder has exclusive ownership rights and land use authorization for a term of up to 99 years.</p>
+        <ul style="margin: 0.8rem 0 1rem 1.5rem;">
+          <li><strong>Primary Security:</strong> A C of O can be issued directly on state land or processed independently over excised family land.</li>
+          <li><strong>Institutional Leverage:</strong> Banks and financial institutions treat a C of O as prime collateral, making it easier to leverage for project financing or resale to institutional investors.</li>
+        </ul>
+      </section>
+
+      <blockquote style="background: var(--bg-light); border-left: 4px solid var(--accent); padding: 1rem; margin-top: 1.5rem; border-radius: 4px;">
+        <p><strong>Key Takeaway:</strong> Securing your investment starts with verified paper, not promise.</p>
+      </blockquote>
+    `
+  },
+  "land-beats-inflation": {
+    category: "Investment Strategy",
+    title: "Why High-Yield Land Investments Beat Market Inflation",
+    date: "August 08, 2026",
+    content: `
+      <p class="lead-text" style="font-weight: 600; font-size: 1.1rem; color: var(--primary);">
+        When inflation steadily erodes local currency value and stock market volatility leaves traditional portfolios exposed, wealth preservation requires hard assets. Cash sitting in standard savings vehicles loses purchasing power every day, while traditional fixed-income yields often fail to keep pace with real inflation rates.
+      </p>
+      <p>Strategic land banking—acquiring undeveloped land in high-growth corridors before peak urbanization—stands out as one of the few asset classes that consistently outperforms inflation while delivering exponential capital appreciation.</p>
+
+      <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+      <section>
+        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">The Mechanics of Inflation Protection</h3>
+        <p>Land is an inherently finite asset. Unlike fiat currency, state governments and developers cannot manufacture more real estate in high-demand economic hubs.</p>
+        <ul style="margin: 0.8rem 0 1rem 1.5rem;">
+          <li><strong>Scarcity-Driven Value:</strong> As population density expands into emerging corridors, land supply shrinks while demand surges. This built-in economic dynamic ensures land values reprice upward alongside inflation.</li>
+          <li><strong>Intrinsic Capital Preservation:</strong> Liquid assets depreciate as consumer prices rise, but raw land maintains intrinsic structural value. It is unaffected by corporate earnings misses, management failures, or short-term market speculation.</li>
+        </ul>
+      </section>
+
+      <blockquote style="background: var(--bg-light); border-left: 4px solid var(--accent); padding: 1rem; margin-top: 1.5rem; border-radius: 4px;">
+        <p><strong>Key Takeaway:</strong> Building generational wealth isn't about chasing speculative short-term trends; it is about anchoring capital into hard, appreciating assets that outpace currency debasement.</p>
+      </blockquote>
+    `
+  }
+};
+
+function openBlogModal(postKey) {
+  const post = blogPosts[postKey];
+  if (!post) return;
+
+  const catElem = document.getElementById("modal-category");
+  const titleElem = document.getElementById("modal-title");
+  const dateElem = document.getElementById("modal-date");
+  const bodyElem = document.getElementById("modal-body");
+  const modal = document.getElementById("blog-modal");
+
+  if (catElem) catElem.innerText = post.category;
+  if (titleElem) titleElem.innerText = post.title;
+  if (dateElem) dateElem.innerHTML = `<i class="fa-regular fa-calendar"></i> ${post.date}`;
+  if (bodyElem) bodyElem.innerHTML = post.content;
+
+  if (modal) {
+    modal.style.display = "block";
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeBlogModal() {
+  const modal = document.getElementById("blog-modal");
+  if (modal) {
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+}
+
+function closePropertyModal() {
+  const modal = document.getElementById("property-modal");
+  if (modal) {
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+}
+
+// Event Listeners for Closing Modals
+window.addEventListener("click", (event) => {
+  const blogModal = document.getElementById("blog-modal");
+  const propertyModal = document.getElementById("property-modal");
+
+  if (event.target === blogModal) closeBlogModal();
+  if (event.target === propertyModal) closePropertyModal();
+});
+
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeBlogModal();
+    closePropertyModal();
+  }
+});
+
+// Initialize Everything on DOM Load
+document.addEventListener("DOMContentLoaded", () => {
+  renderTeamCarousel();
+  fetchAndRenderProperties("property-grid");
+  setupFormspreeHandler();
+  setupReviewsSlider();
+
+  const nextTeamBtn = document.getElementById("teamNextBtn");
+  if (nextTeamBtn) {
+    nextTeamBtn.addEventListener("click", () => rotateTeamCarousel(1));
+  }
+});
