@@ -6,10 +6,10 @@
    1. CSS Custom Properties / Design Tokens
    -------------------------------------------------------------------------- */
 :root {
-  --primary: #0f172a;          /* Deep Navy / Executive Base */
+  --primary: #0f172a;        /* Deep Navy / Executive Base */
   --primary-light: #1e293b;    /* Lighter Navy Surface */
-  --accent: #d97706;           /* Premium Gold / Amber */
-  --accent-hover: #b45309;     /* Deep Gold Hover */
+  --accent: #d97706;          /* Premium Gold / Amber */
+  --accent-hover: #b45309;    /* Deep Gold Hover */
   --brand-green: #16a34a;      /* Original Verified Seal Green */
   --brand-green-hover: #15803d;/* Darker Green Hover */
   --brand-green-fade: rgba(22, 163, 74, 0.12); /* Soft Faded Green Badge BG */
@@ -47,6 +47,7 @@ body {
   line-height: 1.6;
   color: var(--text-dark);
   background-color: var(--bg-white);
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -175,7 +176,7 @@ textarea:focus-visible {
 }
 
 /* --------------------------------------------------------------------------
-   4. Navigation Bar
+   4. Navigation Bar & Mobile Menu Toggle Styles
    -------------------------------------------------------------------------- */
 header {
   position: sticky;
@@ -232,6 +233,21 @@ header {
 
 .btn-nav:hover {
   background-color: var(--accent-hover) !important;
+}
+
+/* Mobile Menu Toggle Base */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.menu-toggle .bar {
+  width: 25px;
+  height: 3px;
+  background-color: var(--primary, #333);
+  transition: 0.3s;
 }
 
 /* --------------------------------------------------------------------------
@@ -366,65 +382,161 @@ header {
 }
 
 /* --------------------------------------------------------------------------
-   8. Meet Our Team Section (Side-by-Side & Image Size Fix)
+   8. Meet Our Team Section (Scope-Protected)
    -------------------------------------------------------------------------- */
-.team-carousel-container {
-  width: 100%;
-  overflow-x: auto;
-  padding: 1rem 0;
-  scroll-behavior: smooth;
-  scrollbar-width: none; /* Firefox */
+.tobadem-team-section {
+    padding: 80px 20px;
+    text-align: center;
+    background-color: #ffffff;
 }
 
-.team-carousel-container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+.tobadem-team-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
 }
 
-/* Flex track forcing team cards into a side-by-side row */
-.team-track {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 1.5rem;
-  align-items: stretch;
-  width: max-content;
+.tobadem-team-section .section-title {
+    color: #0f172a;
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
 }
 
-/* Dynamic Team Cards */
-.team-track > div,
-.team-card {
-  flex: 0 0 260px;
-  max-width: 260px;
-  background: var(--bg-white);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  text-align: center;
-  color: var(--text-dark);
+.tobadem-team-section .section-subtitle {
+    color: #64748b;
+    font-size: 1rem;
+    max-width: 700px;
+    margin: 0 auto 50px auto;
+    line-height: 1.6;
 }
 
-/* Team Card Text Elements */
-.team-track h3,
-.team-card h3 {
-  color: var(--primary);
-  font-size: 1.1rem;
-  margin-top: 0.75rem;
+.tobadem-team-section .slider-wrapper {
+    position: relative;
+    width: 100%;
 }
 
-.team-track p,
-.team-card p {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  padding: 0 0.5rem 1rem 0.5rem;
+.tobadem-team-section .team-slider {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 60px) / 4);
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding-bottom: 25px;
 }
 
-/* Team Card Images */
-.team-track img,
-.team-card img {
-  width: 100% !important;
-  height: 240px !important;
-  object-fit: cover !important;
-  display: block;
+.tobadem-team-section .team-slider::-webkit-scrollbar {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .tobadem-team-section .team-slider { grid-auto-columns: calc((100% - 40px) / 3); }
+}
+@media (max-width: 768px) {
+    .tobadem-team-section .team-slider { grid-auto-columns: calc((100% - 20px) / 2); }
+}
+@media (max-width: 480px) {
+    .tobadem-team-section .team-slider { grid-auto-columns: 100%; }
+}
+
+.tobadem-team-section .team-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f1f5f9;
+}
+
+.tobadem-team-section .image-container {
+    width: 100%;
+    height: 340px;
+    overflow: hidden;
+    clip-path: polygon(12% 0%, 100% 0%, 88% 100%, 0% 100%);
+    background: #f8fafc;
+    position: relative;
+}
+
+.tobadem-team-section .image-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 11.5%;
+    width: 4px;
+    height: 35px;
+    background-color: #d97706;
+    z-index: 2;
+}
+
+.tobadem-team-section .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tobadem-team-section .member-info {
+    margin-top: 5px;
+    background: #ffffff;
+    border-left: 4px solid #d97706;
+    padding: 16px 15px;
+    text-align: left;
+    clip-path: polygon(0 0, 90% 0, 100% 100%, 0% 100%);
+}
+
+.tobadem-team-section .member-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.3px;
+}
+
+.tobadem-team-section .member-role {
+    font-size: 0.9rem;
+    color: #d97706;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+.tobadem-team-section .slide-btn {
+    position: absolute;
+    right: -25px;
+    top: 45%;
+    transform: translateY(-50%);
+    width: 46px;
+    height: 46px;
+    border-radius: 6px;
+    background-color: #d97706;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
+    transition: background-color 0.2s, transform 0.2s;
+    z-index: 10;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.tobadem-team-section .slide-btn:hover {
+    background-color: #b45309;
+    transform: translateY(-50%) scale(1.03);
+}
+
+.tobadem-team-section .prev-btn {
+    left: -25px;
+    right: auto;
+}
+
+@media (max-width: 1250px) {
+    .tobadem-team-section .next-btn { right: 10px; }
+    .tobadem-team-section .prev-btn { left: 10px; }
 }
 
 /* --------------------------------------------------------------------------
@@ -498,6 +610,9 @@ header {
   display: flex;
   flex-direction: column;
   transition: var(--transition);
+  max-width: 380px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .property-card:hover {
@@ -646,11 +761,11 @@ header {
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 1rem 0.5rem;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 
 .reviews-track::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
+  display: none;
 }
 
 .review-card {
@@ -947,7 +1062,7 @@ footer {
 }
 
 /* --------------------------------------------------------------------------
-   16. Responsive Media Queries
+   16. Responsive Media Queries & Component Tweaks
    -------------------------------------------------------------------------- */
 @media (max-width: 992px) {
   .ceo-wrapper {
@@ -967,6 +1082,11 @@ footer {
 }
 
 @media (max-width: 768px) {
+  /* Make hamburger button visible on mobile */
+  .menu-toggle {
+    display: flex;
+  }
+
   .nav-links {
     display: none;
   }
@@ -982,6 +1102,8 @@ footer {
     padding: 1.5rem;
     box-shadow: var(--shadow-md);
     border-top: 1px solid var(--border-color);
+    gap: 1rem;
+    text-align: center;
   }
 
   .hero-content h1 {
@@ -1017,30 +1139,26 @@ footer {
 }
 
 @media (max-width: 600px) {
-  .team-track > div,
-  .team-card {
+  .tobadem-team-section .team-slider > div,
+  .tobadem-team-section .team-card {
     flex: 0 0 220px;
     max-width: 220px;
   }
 
-  .team-track img,
-  .team-card img {
+  .tobadem-team-section .team-slider img,
+  .tobadem-team-section .team-card img {
     height: 200px !important;
   }
 }
+
 /* Form Feedback Layout */
 #formFeedback {
   margin-top: 12px;
   display: block;
   width: 100%;
 }
-/* Constrain Property Card Image and Dimensions */
-.property-card {
-  max-width: 380px;
-  width: 100%;
-  margin: 0 auto;
-}
 
+/* Property Card Image & Grid Constraints */
 .property-card .card-image-wrapper,
 .property-card .card-img {
   height: 220px !important;
@@ -1049,18 +1167,9 @@ footer {
   object-fit: cover;
 }
 
-/* Optimize Property Grid Gap */
 #property-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px; /* Reduces the gap between cards */
+  gap: 20px;
 }
-
-.property-card {
-  margin-bottom: 0; /* Cleans up legacy bottom margins */
-}
-
-
-
-
 
