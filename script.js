@@ -167,6 +167,57 @@ async function renderTobademProperties(containerId = "property-grid") {
   }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const slider = document.getElementById('teamSlider');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+
+    // Helper function to get exact movement steps (card size + gap)
+    function getScrollStep() {
+        const firstCard = slider.querySelector('.team-card');
+        if (!firstCard) return 300; 
+        return firstCard.offsetWidth + 20; // 20px matches your CSS grid gap
+    }
+
+    // Next Button Click
+    nextBtn.addEventListener('click', () => {
+        const step = getScrollStep();
+        const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+        // Condition: If all cards fit on screen OR we reached the true scroll end
+        if (maxScrollLeft <= 0 || Math.ceil(slider.scrollLeft) >= maxScrollLeft - 10) {
+            slider.scrollTo({
+                left: 0,
+                behavior: 'smooth'
+            });
+        } else {
+            slider.scrollBy({
+                left: step,
+                behavior: 'smooth'
+            });
+        }
+    });
+
+    // Previous Button Click
+    prevBtn.addEventListener('click', () => {
+        const step = getScrollStep();
+        const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+        // Condition: If at the very start, jump directly to the end
+        if (slider.scrollLeft <= 10) {
+            slider.scrollTo({
+                left: maxScrollLeft,
+                behavior: 'smooth'
+            });
+        } else {
+            slider.scrollBy({
+                left: -step,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
 // ==========================================
 // 4. REVIEWS SLIDER CONTROLLER
 // ==========================================
@@ -212,7 +263,7 @@ function setupInquiryForm() {
     // UI Loading State
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.innerText = "Submitting Request...";
+      submitBtn.innerText = "Submitting...";
     }
     if (feedback) {
       feedback.innerText = "";
@@ -231,13 +282,11 @@ function setupInquiryForm() {
 
       if (error) throw error;
 
-      // Success Feedback (On-page text and popup alert)
+      // Success Feedback
       if (feedback) {
         feedback.style.color = "green";
         feedback.innerText = "Success! Your request has been sent. We will get in touch shortly.";
       }
-      
-      alert("Success! Your inquiry has been received by Tobadem Homes. We will contact you shortly.");
       form.reset();
 
     } catch (err) {
@@ -246,7 +295,6 @@ function setupInquiryForm() {
         feedback.style.color = "red";
         feedback.innerText = "Submission failed: " + err.message;
       }
-      alert("Submission failed: " + err.message);
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
@@ -340,9 +388,83 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
-// Initialize on DOM Ready
+// SEARCH FILTER
+// 1. Keep your existing DOMContentLoaded listener exactly as it is
 document.addEventListener("DOMContentLoaded", () => {
   renderTobademProperties("property-grid");
+  setupSearchListeners(); 
   setupReviewsSlider();
   setupInquiryForm();
 });
+
+// Mobile Menu Toggle Handler
+  const mobileMenuBtn = document.getElementById('mobile-menu');
+  const navLinks = document.querySelector('.nav-links');
+
+  if (mobileMenuBtn && navLinks) {
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Close menu automatically when any nav link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+  }
+  
+// 2. Updated setupSearchListeners function (Button logic removed, live typing search enabled)
+function setupSearchListeners() {
+  const searchInput = document.getElementById('propertySearchInput');
+
+  // Safety check: Exit if the input element is missing on the current page
+  if (!searchInput) return;
+
+  // Trigger instant search results automatically as the user types
+  searchInput.addEventListener('input', () => {
+    executePropertySearch(searchInput.value);
+  });
+
+  // Trigger search when user presses the "Enter" key inside the input field
+  searchInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      executePropertySearch(searchInput.value);
+    }
+  });
+}
+
+// 3. Add the search filtering logic
+function executePropertySearch(query) {
+  const searchTerm = query.toLowerCase().trim();
+  const gridContainer = document.getElementById('property-grid');
+  
+  if (!gridContainer) return;
+
+  const cards = gridContainer.getElementsByClassName('property-card');
+  let matchCount = 0;
+
+  Array.from(cards).forEach(card => {
+    // Get all text content inside the card to look for a match
+    const cardText = card.textContent.toLowerCase();
+    
+    if (cardText.includes(searchTerm)) {
+      card.style.display = ""; // Show card
+      matchCount++;
+    } else {
+      card.style.display = "none"; // Hide card
+    }
+  });
+
+  // Handle "No results found" messaging
+  const existingMsg = document.getElementById('no-search-results');
+  if (existingMsg) existingMsg.remove();
+
+  if (matchCount === 0) {
+    const noResultsHTML = `
+      <div id="no-search-results" style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #666;">
+        <p>No properties found matching "${query}". Please try a different location or keyword.</p>
+      </div>`;
+    gridContainer.insertAdjacentHTML('beforeend', noResultsHTML);
+  }
+}
