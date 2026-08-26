@@ -56,14 +56,22 @@
   <header>
     <nav class="navbar">
       <div class="logo">TOBADEM <span>HOMES</span></div>
+
+      <!-- Mobile Menu Hamburger Toggle Button -->
+      <div class="menu-toggle" id="mobile-menu" aria-label="Toggle Navigation">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+
       <ul class="nav-links">
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About Us</a></li>
         <li><a href="#why-us">Why Us</a></li>
         <li><a href="#ceo">Meet CEO</a></li>
-        <li><a href="#partners">Partners</a></li>
         <li><a href="#properties">Properties</a></li>
         <li><a href="#testimonials">Reviews</a></li>
+         <li><a href="#partners">Partners</a></li>
         <li><a href="#blog">Blog</a></li>
         <li><a href="#contact" class="btn-nav">Contact Us</a></li>
       </ul>
@@ -119,9 +127,9 @@
         <h3 class="ceo-name">Adelugbin Michael Tobi</h3>
         <p class="lead">"In cybersecurity, the principle is simple: zero trust—always verify. We brought that exact mindset into real estate."</p>
         
-        <p><strong>Michael Adelugbin</strong> is a Product Designer, Cybersecurity Analyst,
-           Associate Member of the Cyber Security Experts Association of Nigeria (CSEAN), 
-          and the CEO of TOBADEM HOMES.</p>
+        <p><strong>Adelugbin Michael Tobi</strong> is a Product Designer, Cybersecurity Analyst,
+            Associate Member of the Cyber Security Experts Association of Nigeria (CSEAN), 
+           and the CEO of TOBADEM HOMES.</p>
         
         <p>His background in technology, compliance, and risk management is central to shaping our operating model.
            Blending analytical rigor with legal due diligence, he leads a high-performing team that delivers secure, 
@@ -147,21 +155,7 @@
   </section>
 
 
-  <!-- Partners & Marketed Developers Section (Side-by-Side Names Only) -->
-  <section id="partners" class="container bg-light">
-    <div class="section-header">
-      <span class="category">Trusted Network</span>
-      <h2>Our Developer Partners</h2>
-      <p>Collaborating with top-tier, industry-leading real estate developers.</p>
-    </div>
-    <div class="developer-partners-grid">
-      <div class="partner-card"><span>Arcview Investment Ltd.</span></div>
-      <div class="partner-card"><span>Gespoint Investment Ltd.</span></div>
-      <div class="partner-card"><span>Zylus Homes</span></div>
-      <div class="partner-card"><span>AyHomes</span></div>
-      <div class="partner-card"><span>Veritasi Homes</span></div>
-    </div>
-  </section>
+  
 
   <!-- Property Listings Section -->
   <section id="properties" class="container">
@@ -169,11 +163,99 @@
       <h2>Featured Properties & Investment Opportunities</h2>
       <p>Explore top-tier plots, land banking offers, and commercial corridors across Nigeria. Click any property for full details.</p>
     </div>
+
+    <!-- Live Property Search Bar & Button Wrapper -->
+    <div class="property-search-wrapper" style="margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; display: flex; gap: 10px;">
+      <input 
+        type="text" 
+        id="propertySearchInput" 
+        placeholder="Search properties by name, location, or features..." 
+        style="flex: 1; padding: 0.8rem 1rem; border: 1px solid var(--border-color); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.95rem; outline: none;"
+      >
+    </div>
     <div class="grid" id="property-grid">
       <!-- JavaScript injects property cards here -->
     </div>
   </section>
+<!-- Meet Our Team Section -->
+<section class="team-section tobadem-team-section">
+    <div class="container">
+        <h2 class="section-title">Meet Our Team</h2>
+        <p class="section-subtitle">Meet the dedicated professionals driving your wealth creation through strategic land banking and secure property acquisitions.</p>
+        
+        <div class="slider-wrapper">
+            <button class="slide-btn prev-btn" id="prevBtn" aria-label="Previous slide">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M15.41 16.59L10.83 12l4.58-4.41L14 6l-6 6 6 6 1.41-1.41z" fill="currentColor"/>
+                </svg>
+            </button>
 
+            <div class="team-slider" id="teamSlider">
+                <!-- Member 1 -->
+                <div class="team-card">
+                    <div class="image-container">
+                        <img src="./images/ceo-2.jpeg" alt="Adelugbin Michael">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Adelugbin Michael</h3>
+                        <p class="member-role">Founder & Ceo</p>
+                    </div>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="team-card">
+                    <div class="image-container">
+                        <img src="./images/fred1.jpeg" alt="Fredrick Bishopton">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Fredrick Bishopton</h3>
+                        <p class="member-role">Legal Head</p>
+                    </div>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="team-card">
+                    <div class="image-container">
+                        <img src="./images/abdu.jpeg" alt="Abdullahi Akande">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Abdullahi Akande</h3>
+                        <p class="member-role">Civil Engineer</p>
+                    </div>
+                </div>
+
+                <!-- Member 4 -->
+                <div class="team-card">
+                    <div class="image-container">
+                        <img src="./images/ibrahim1.jpeg" alt="Sanusi Ibrahim">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">Sanusi Ibrahim</h3>
+                        <p class="member-role">Architect</p>
+                    </div>
+                </div>
+
+                <!-- Member 5 -->
+                <div class="team-card">
+                    <div class="image-container">
+                        <img src="./images/ceo-2.jpeg" alt="New Member">
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">New Team Member</h3>
+                        <p class="member-role">Project Manager</p>
+                    </div>
+                </div> 
+            </div>
+
+            <button class="slide-btn next-btn" id="nextBtn" aria-label="Next slide">
+                <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" fill="currentColor"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+    
   <!-- Testimonials & Reviews Section (Sliding / Forwarding Track) -->
   <section id="testimonials" class="container bg-light">
     <div class="section-header">
@@ -227,6 +309,22 @@
     </div>
   </section>
 
+<!-- Partners & Marketed Developers Section (Side-by-Side Names Only) -->
+  <section id="partners" class="container bg-light">
+    <div class="section-header">
+      <span class="category">Trusted Network</span>
+      <h2>Our Developer Partners</h2>
+      <p>Collaborating with top-tier, industry-leading real estate developers.</p>
+    </div>
+    <div class="developer-partners-grid">
+      <div class="partner-card"><span>Arcview Investment Ltd.</span></div>
+      <div class="partner-card"><span>Gespoint Investment Ltd.</span></div>
+      <div class="partner-card"><span>Zylus Homes</span></div>
+      <div class="partner-card"><span>AyHomes</span></div>
+      <div class="partner-card"><span>Veritasi Homes</span></div>
+    </div>
+  </section>
+
   <!-- Educational Blog Section -->
   <section id="blog" class="container">
     <div class="section-header">
@@ -258,7 +356,7 @@
     </div>
   </section>
 
-  <!-- Contact Us Section -->
+ <!-- Contact Us Section -->
   <section id="contact" class="container bg-light">
     <div class="section-header">
       <h2>Get In Touch</h2>
@@ -269,11 +367,12 @@
       <form class="contact-form" action="https://formspree.io/f/xkjwpkge" method="POST" id="inquiryForm">
         <input type="hidden" name="_subject" value="New Website Lead - Tobadem Homes">
         
-        <input type="text" name="name" id="name" placeholder="Full Name" required>
-        <input type="tel" name="phone" id="phone" placeholder="Phone Number" required>
-        <textarea name="message" id="message" rows="4" placeholder="How can Tobadem Homes assist you today?" required></textarea>
+        <input type="text" name="name" id="name" placeholder="Full Name" autocomplete="name" required>
+        <input type="tel" name="phone" id="phone" placeholder="Phone Number" autocomplete="tel" required>
+        <textarea name="message" id="message" rows="4" placeholder="How can Tobadem Homes assist you today?" autocomplete="off" required></textarea>
         
-        <button type="submit" class="btn-primary">Send Email Inquiry</button>
+        <button type="submit" class="btn-primary" id="submitBtn">Submit Request</button>
+        <span id="formFeedback" style="display: block; margin-top: 12px; width: 100%;"></span>
       </form>
     </div>
   </section>
