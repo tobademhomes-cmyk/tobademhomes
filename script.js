@@ -56,7 +56,7 @@ async function fetchPropertiesFromSupabase() {
 }
 
 // ==========================================
-// 3. PROPERTY LISTING RENDERER
+// 3. PROPERTY LISTING RENDERER (BADGE STRETCH FIXED)
 // ==========================================
 async function renderTobademProperties(containerId = "property-grid") {
   const container = document.getElementById(containerId);
@@ -95,11 +95,11 @@ async function renderTobademProperties(containerId = "property-grid") {
   // 3. Filter properties list
   const filteredProps = activeFilter === "All" 
     ? properties 
-    : properties.filter(p => p.location.toLowerCase().includes(activeFilter.toLowerCase()));
+    : properties.filter(p => p.location && p.location.toLowerCase().includes(activeFilter.toLowerCase()));
 
   // 4. Render property cards into grid
   if (filteredProps.length === 0) {
-    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No properties currently found in ${activeFilter}. (Ensure your table rows are populated in Supabase).</p>`;
+    container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No properties currently found in ${activeFilter}.</p>`;
   } else {
     container.innerHTML = filteredProps.map(prop => {
       const waText = encodeURIComponent(`Hello Tobadem Homes, I want to verify the title and request inspection details for ${prop.title} (${prop.location}).`);
@@ -107,7 +107,7 @@ async function renderTobademProperties(containerId = "property-grid") {
 
       return `
         <article class="property-card" data-id="${prop.id}">
-          <div class="card-image-wrapper">
+          <div class="card-image-wrapper" style="position: relative; overflow: hidden;">
             <img 
               src="${prop.imageUrl}" 
               alt="${prop.title}" 
@@ -115,10 +115,14 @@ async function renderTobademProperties(containerId = "property-grid") {
               class="card-img"
               onerror="this.onerror=null; this.style.display='none';"
             />
-            <span class="card-badge">${prop.type}</span>
-            <div class="verification-seal">
-              <svg viewBox="0 0 24 24" style="width:14px;height:14px;"><path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-5.45 9-12V5l-9-4zm-2 16l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-              Verified Title
+            ${prop.type ? `<span class="card-badge">${prop.type}</span>` : ''}
+            
+            <!-- FIXED VERIFIED TITLE BADGE POSITION & DIMENSIONS -->
+            <div class="verification-seal" style="position: absolute; top: 12px; right: 12px; width: auto !important; height: auto !important; max-width: fit-content; background: #10b981; color: #ffffff; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; z-index: 2; line-height: 1;">
+              <svg viewBox="0 0 24 24" style="width:14px; height:14px; min-width:14px; display:inline-block; vertical-align:middle; fill:currentColor;">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-5.45 9-12V5l-9-4zm-2 16l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+              </svg>
+              <span>Verified Title</span>
             </div>
           </div>
           
@@ -136,15 +140,17 @@ async function renderTobademProperties(containerId = "property-grid") {
                 <span class="price-label">Price / Investment</span>
                 <span class="price-value">${prop.price}</span>
               </div>
-              <div class="deposit-tag" style="font-size: 0.85rem; color: var(--text-dark); margin-top: 4px;">
-                <span>Initial Deposit:</span> <strong>${prop.initialDeposit}</strong>
-              </div>
+              ${prop.initialDeposit ? `
+                <div class="deposit-tag" style="font-size: 0.85rem; color: var(--text-dark); margin-top: 4px;">
+                  <span>Initial Deposit:</span> <strong>${prop.initialDeposit}</strong>
+                </div>
+              ` : ''}
             </div>
 
             <ul class="card-features-list" style="list-style: none; padding: 0; margin: 1rem 0; font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.4rem;">
               ${(prop.features || []).map(feat => `
                 <li style="display: flex; align-items: center; gap: 6px;">
-                  <span style="color: var(--brand-green); font-weight: bold;">✓</span>
+                  <span style="color: var(--brand-green, #10b981); font-weight: bold;">✓</span>
                   <span>${feat}</span>
                 </li>
               `).join('')}
@@ -167,59 +173,69 @@ async function renderTobademProperties(containerId = "property-grid") {
   }
 }
 
+// ==========================================
+// 4. DOM LOADED & TEAM SLIDER
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-    const slider = document.getElementById('teamSlider');
-    const nextBtn = document.getElementById('nextBtn');
-    const prevBtn = document.getElementById('prevBtn');
+  renderTobademProperties("property-grid");
+  setupSearchListeners(); 
+  setupReviewsSlider();
+  setupInquiryForm();
 
-    // Helper function to get exact movement steps (card size + gap)
+  // Mobile Menu Toggle Handler
+  const mobileMenuBtn = document.getElementById('mobile-menu');
+  const navLinks = document.querySelector('.nav-links');
+
+  if (mobileMenuBtn && navLinks) {
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+  }
+
+  // Team Slider Initialization
+  const slider = document.getElementById('teamSlider');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+
+  if (slider && nextBtn && prevBtn) {
     function getScrollStep() {
-        const firstCard = slider.querySelector('.team-card');
-        if (!firstCard) return 300; 
-        return firstCard.offsetWidth + 20; // 20px matches your CSS grid gap
+      const firstCard = slider.querySelector('.team-card');
+      if (!firstCard) return 300; 
+      return firstCard.offsetWidth + 20;
     }
 
-    // Next Button Click
     nextBtn.addEventListener('click', () => {
-        const step = getScrollStep();
-        const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+      const step = getScrollStep();
+      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
 
-        // Condition: If all cards fit on screen OR we reached the true scroll end
-        if (maxScrollLeft <= 0 || Math.ceil(slider.scrollLeft) >= maxScrollLeft - 10) {
-            slider.scrollTo({
-                left: 0,
-                behavior: 'smooth'
-            });
-        } else {
-            slider.scrollBy({
-                left: step,
-                behavior: 'smooth'
-            });
-        }
+      if (maxScrollLeft <= 0 || Math.ceil(slider.scrollLeft) >= maxScrollLeft - 10) {
+        slider.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        slider.scrollBy({ left: step, behavior: 'smooth' });
+      }
     });
 
-    // Previous Button Click
     prevBtn.addEventListener('click', () => {
-        const step = getScrollStep();
-        const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+      const step = getScrollStep();
+      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
 
-        // Condition: If at the very start, jump directly to the end
-        if (slider.scrollLeft <= 10) {
-            slider.scrollTo({
-                left: maxScrollLeft,
-                behavior: 'smooth'
-            });
-        } else {
-            slider.scrollBy({
-                left: -step,
-                behavior: 'smooth'
-            });
-        }
+      if (slider.scrollLeft <= 10) {
+        slider.scrollTo({ left: maxScrollLeft, behavior: 'smooth' });
+      } else {
+        slider.scrollBy({ left: -step, behavior: 'smooth' });
+      }
     });
+  }
 });
 
 // ==========================================
-// 4. REVIEWS SLIDER CONTROLLER
+// 5. REVIEWS SLIDER CONTROLLER
 // ==========================================
 function setupReviewsSlider() {
   const track = document.getElementById("reviewsTrack");
@@ -240,7 +256,7 @@ function setupReviewsSlider() {
 }
 
 // ==========================================
-// 5. INQUIRY FORM SUBMISSION HANDLER
+// 6. INQUIRY FORM SUBMISSION HANDLER
 // ==========================================
 function setupInquiryForm() {
   const form = document.getElementById("inquiryForm");
@@ -252,7 +268,6 @@ function setupInquiryForm() {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Collect data mapping directly to your Supabase table columns: name, phone, message
     const formData = new FormData(form);
     const payload = {
       name: formData.get("name"),
@@ -260,7 +275,6 @@ function setupInquiryForm() {
       message: formData.get("message")
     };
 
-    // UI Loading State
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.innerText = "Submitting...";
@@ -275,14 +289,12 @@ function setupInquiryForm() {
         throw new Error("Database client is not connected.");
       }
 
-      // Insert directly into your Supabase 'inquiries' table
       const { error } = await dbClient
         .from('inquiries')
         .insert([payload]);
 
       if (error) throw error;
 
-      // Success Feedback
       if (feedback) {
         feedback.style.color = "green";
         feedback.innerText = "Success! Your request has been sent. We will get in touch shortly.";
@@ -290,7 +302,7 @@ function setupInquiryForm() {
       form.reset();
 
     } catch (err) {
-      console.log("Submission error:", err.message);
+      console.error("Submission error:", err.message);
       if (feedback) {
         feedback.style.color = "red";
         feedback.innerText = "Submission failed: " + err.message;
@@ -305,7 +317,7 @@ function setupInquiryForm() {
 }
 
 // ==========================================
-// 6. BLOG DATABASE & MODAL CONTROLLER
+// 7. BLOG DATABASE & MODAL CONTROLLER
 // ==========================================
 const blogPosts = {
   "c-of-o-vs-excision": {
@@ -388,45 +400,17 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
-// SEARCH FILTER
-// 1. Keep your existing DOMContentLoaded listener exactly as it is
-document.addEventListener("DOMContentLoaded", () => {
-  renderTobademProperties("property-grid");
-  setupSearchListeners(); 
-  setupReviewsSlider();
-  setupInquiryForm();
-});
-
-// Mobile Menu Toggle Handler
-  const mobileMenuBtn = document.getElementById('mobile-menu');
-  const navLinks = document.querySelector('.nav-links');
-
-  if (mobileMenuBtn && navLinks) {
-    mobileMenuBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
-    });
-
-    // Close menu automatically when any nav link is clicked
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-      });
-    });
-  }
-  
-// 2. Updated setupSearchListeners function (Button logic removed, live typing search enabled)
+// ==========================================
+// 8. LIVE SEARCH FILTER HANDLER
+// ==========================================
 function setupSearchListeners() {
   const searchInput = document.getElementById('propertySearchInput');
-
-  // Safety check: Exit if the input element is missing on the current page
   if (!searchInput) return;
 
-  // Trigger instant search results automatically as the user types
   searchInput.addEventListener('input', () => {
     executePropertySearch(searchInput.value);
   });
 
-  // Trigger search when user presses the "Enter" key inside the input field
   searchInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
       executePropertySearch(searchInput.value);
@@ -434,29 +418,25 @@ function setupSearchListeners() {
   });
 }
 
-// 3. Add the search filtering logic
 function executePropertySearch(query) {
   const searchTerm = query.toLowerCase().trim();
   const gridContainer = document.getElementById('property-grid');
-  
   if (!gridContainer) return;
 
   const cards = gridContainer.getElementsByClassName('property-card');
   let matchCount = 0;
 
   Array.from(cards).forEach(card => {
-    // Get all text content inside the card to look for a match
     const cardText = card.textContent.toLowerCase();
     
     if (cardText.includes(searchTerm)) {
-      card.style.display = ""; // Show card
+      card.style.display = ""; 
       matchCount++;
     } else {
-      card.style.display = "none"; // Hide card
+      card.style.display = "none"; 
     }
   });
 
-  // Handle "No results found" messaging
   const existingMsg = document.getElementById('no-search-results');
   if (existingMsg) existingMsg.remove();
 
