@@ -30,7 +30,8 @@ async function fetchPropertiesFromSupabase() {
   try {
     const { data, error } = await dbClient
       .from('properties')
-      .select('*');
+      .select('*')
+      .order('id', { ascending: true }); // FIXED: Orders rows 1, 2, 3, 4 sequentially
 
     if (error) {
       console.error("Error fetching properties from Supabase:", error.message);
@@ -143,6 +144,11 @@ async function renderTobademProperties(containerId = "property-grid") {
               ${prop.initialDeposit ? `
                 <div class="deposit-tag" style="font-size: 0.85rem; color: var(--text-dark); margin-top: 4px;">
                   <span>Initial Deposit:</span> <strong>${prop.initialDeposit}</strong>
+                </div>
+              ` : ''}
+              ${prop.paymentPlan ? `
+                <div class="payment-plan-tag" style="font-size: 0.85rem; color: var(--text-dark); margin-top: 4px;">
+                  <span>Payment Plan:</span> <strong>${prop.paymentPlan}</strong>
                 </div>
               ` : ''}
             </div>
