@@ -1173,3 +1173,92 @@ footer {
   gap: 20px;
 }
 
+/* --- MOBILE HEADER ALIGNMENT --- */
+@media (max-width: 768px) {
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+
+  .logo {
+    order: 1; /* Forces TOBADEM HOMES to the left */
+  }
+
+  .menu-toggle {
+    order: 2; /* Forces hamburger icon to the right */
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  /* Style for the hamburger bars if needed */
+  .menu-toggle span, 
+  .menu-toggle .bar {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: var(--text-dark, #111);
+    border-radius: 2px;
+  }
+
+  /* Dropdown styling when active */
+  .nav-links.active {
+    display: flex !important;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    padding: 1.5rem;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+}
+/* ==========================================
+   TOBADEM HOMES - VERIFIED BADGE OVERRIDE FIX
+   ========================================== */
+.card-image-wrapper {
+  position: relative !important;
+}
+
+.verification-seal {
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: max-content !important;
+  max-height: max-content !important;
+  padding: 6px 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  border-radius: 6px !important;
+  z-index: 10 !important;
+  box-sizing: border-box !important;
+}
+
+.verification-seal svg {
+  width: 14px !important;
+  height: 14px !important;
+  min-width: 14px !important;
+  fill: currentColor !important;
+}
