@@ -1262,3 +1262,41 @@ footer {
   min-width: 14px !important;
   fill: currentColor !important;
 }
+
+
+/* --- TOBADEM HOMES: MOBILE TEAM CARD FIX --- */
+@media (max-width: 768px) {
+  /* 1. Reset card container to fit content strictly */
+  .team-card {
+    height: auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+  }
+
+  /* 2. Remove extra height & aspect ratio traps on image container */
+  .team-card .image-container {
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .team-card .image-container img {
+    width: 100% !important;
+    height: 280px !important; /* Forces a fixed, clean height for photo */
+    object-fit: cover !important;
+    display: block !important;
+  }
+
+  /* 3. Pull name and title immediately under the image */
+  .team-card .member-info {
+    margin-top: 0 !important;       /* Kills margin-top: auto pushing it to the bottom */
+    position: static !important;    /* Overrides absolute bottom placement */
+    padding-top: 12px !important;   /* Sets a tight 12px gap right under photo */
+    padding-bottom: 16px !important;
+    flex-grow: 0 !important;
+  }
+}
