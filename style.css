@@ -387,7 +387,7 @@ header {
 .tobadem-team-section {
     padding: 80px 20px;
     text-align: center;
-    background-color: #ffffff;
+    background-color: var(--bg-light);
 }
 
 .tobadem-team-section .container {
@@ -550,7 +550,7 @@ header {
 }
 
 .partner-card {
-  background: var(--bg-white);
+  background: #ffffff;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   padding: 1.2rem 1rem;
@@ -1300,3 +1300,106 @@ footer {
     flex-grow: 0 !important;
   }
 }
+
+
+/* Justify and expand text in About Us section */
+#about p,
+.about-section p,
+.about-content p {
+  text-align: justify !important;
+  text-justify: inter-word !important;
+  max-width: 950px !important; /* Spreads the paragraph wider across desktop screens */
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* ==========================================
+   REVIEWS CONTINUOUS RIGHTWARD MARQUEE
+   ========================================== */
+
+.reviews-slider-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.reviews-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: continuousScrollRight 25s linear infinite;
+}
+
+/* Pause scroll when a user hovers to read a review */
+.reviews-track:hover {
+  animation-play-state: paused;
+}
+
+/* Set fixed size so review cards don't collapse */
+.review-card {
+  flex-shrink: 0;
+  width: 320px;
+}
+
+/* Keyframe animation for continuous movement to the RIGHT */
+@keyframes continuousScrollRight {
+  0% {
+    transform: translateX(-50%); /* Start shifted left */
+  }
+  100% {
+    transform: translateX(0); /* Move smoothly to origin */
+  }
+}
+
+
+/* ==========================================
+   DEVELOPER PARTNERS CONTINUOUS RIGHTWARD MARQUEE
+   ========================================== */
+
+.developer-partners-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.developer-partners-grid {
+  display: flex !important; /* Converts grid layout into a horizontal track */
+  gap: 20px;
+  width: max-content;
+  animation: continuousScrollRight 20s linear infinite;
+}
+
+/* Pause animation on hover */
+.developer-partners-grid:hover {
+  animation-play-state: paused;
+}
+
+/* Maintain fixed size so cards don't shrink */
+.developer-partners-section .partner-card {
+  flex-shrink: 0;
+  min-width: 220px;
+  text-align: center;
+}
+
+/* ==========================================
+   INFINITE LEFTWARD MARQUEE ANIMATION
+   ========================================== */
+
+@keyframes continuousScrollLeft {
+  0% {
+    transform: translateX(0); /* Starts at default position */
+  }
+  100% {
+    transform: translateX(-50%); /* Moves left by one full duplicated set */
+  }
+}
+
+/* Apply the updated animation name to the tracks */
+.reviews-track {
+  animation: continuousScrollLeft 25s linear infinite;
+}
+
+.developer-partners-grid {
+  animation: continuousScrollLeft 20s linear infinite;
+}
+
