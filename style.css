@@ -6,7 +6,7 @@
    1. CSS Custom Properties / Design Tokens
    -------------------------------------------------------------------------- */
 :root {
-  --primary: #0f172a;        /* Deep Navy / Executive Base */
+  --primary: #0f172a;          /* Deep Navy / Executive Base */
   --primary-light: #1e293b;    /* Lighter Navy Surface */
   --accent: #d97706;          /* Premium Gold / Amber */
   --accent-hover: #b45309;    /* Deep Gold Hover */
@@ -46,7 +46,7 @@ body {
   font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
   color: var(--text-dark);
-  background-color: var(--bg-white);
+  background-color: var(--bg-light); /* Single unified background color */
   overflow-x: hidden;
 }
 
@@ -91,16 +91,19 @@ textarea:focus-visible {
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 5rem 1.5rem;
+  padding: 0 1.5rem; /* Prevents container from inflating section heights */
 }
 
-.bg-light {
-  background-color: var(--bg-light);
+/* Section transparent overrides for unified background */
+section,
+.bg-light,
+.developer-partners-section {
+  background-color: transparent !important;
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .section-header h2 {
@@ -181,7 +184,7 @@ textarea:focus-visible {
 header {
   position: sticky;
   top: 0;
-  background-color: #ffffff;
+  background-color: #ffffff !important;
   z-index: 1000;
   border-bottom: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
@@ -235,7 +238,6 @@ header {
   background-color: var(--accent-hover) !important;
 }
 
-/* Mobile Menu Toggle Base */
 .menu-toggle {
   display: none;
   flex-direction: column;
@@ -250,14 +252,12 @@ header {
   transition: 0.3s;
 }
 
-/* --------------------------------------------------------------------------
-   5. Hero Section
-   -------------------------------------------------------------------------- */
+
 .hero {
   background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), 
-              url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-  height: 80vh;
-  min-height: 500px;
+              url('images/hero-photo.jpeg') center/cover no-repeat;
+  height: 55vh;         /* Reduced from 80vh (Controls height on desktop) */
+  min-height: 380px;     /* Reduced from 500px (Prevents it from shrinking too much) */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -290,6 +290,16 @@ header {
 /* --------------------------------------------------------------------------
    6. About Us Section
    -------------------------------------------------------------------------- */
+#about p,
+.about-section p,
+.about-content p {
+  text-align: justify !important;
+  text-justify: inter-word !important;
+  max-width: 950px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
 .about-text {
   max-width: 800px;
   margin: 0 auto;
@@ -357,8 +367,11 @@ header {
   margin-bottom: 1.2rem;
 }
 
-.ceo-content p {
-  margin-bottom: 1rem;
+/* CEO Text Justification */
+#ceo .ceo-content p,
+#ceo .ceo-content .lead {
+  text-align: justify !important;
+  text-justify: inter-word !important;
 }
 
 .ceo-highlights {
@@ -385,181 +398,175 @@ header {
    8. Meet Our Team Section (Scope-Protected)
    -------------------------------------------------------------------------- */
 .tobadem-team-section {
-    padding: 80px 20px;
-    text-align: center;
-    background-color: var(--bg-light);
+  text-align: center;
 }
 
 .tobadem-team-section .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
 }
 
 .tobadem-team-section .section-title {
-    color: #0f172a;
-    font-size: 2.25rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 12px;
+  color: #0f172a;
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
 }
 
 .tobadem-team-section .section-subtitle {
-    color: #64748b;
-    font-size: 1rem;
-    max-width: 700px;
-    margin: 0 auto 50px auto;
-    line-height: 1.6;
+  color: #64748b;
+  font-size: 1rem;
+  max-width: 700px;
+  margin: 0 auto 50px auto;
+  line-height: 1.6;
 }
 
 .tobadem-team-section .slider-wrapper {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
 }
 
 .tobadem-team-section .team-slider {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: calc((100% - 60px) / 4);
-    gap: 20px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    padding-bottom: 25px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 60px) / 4);
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding-bottom: 25px;
 }
 
 .tobadem-team-section .team-slider::-webkit-scrollbar {
-    display: none;
-}
-
-@media (max-width: 1024px) {
-    .tobadem-team-section .team-slider { grid-auto-columns: calc((100% - 40px) / 3); }
-}
-@media (max-width: 768px) {
-    .tobadem-team-section .team-slider { grid-auto-columns: calc((100% - 20px) / 2); }
-}
-@media (max-width: 480px) {
-    .tobadem-team-section .team-slider { grid-auto-columns: 100%; }
+  display: none;
 }
 
 .tobadem-team-section .team-card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    background: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    border: 1px solid #f1f5f9;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
 }
 
 .tobadem-team-section .image-container {
-    width: 100%;
-    height: 340px;
-    overflow: hidden;
-    clip-path: polygon(12% 0%, 100% 0%, 88% 100%, 0% 100%);
-    background: #f8fafc;
-    position: relative;
+  width: 100%;
+  height: 340px;
+  overflow: hidden;
+  clip-path: polygon(12% 0%, 100% 0%, 88% 100%, 0% 100%);
+  background: #f8fafc;
+  position: relative;
 }
 
 .tobadem-team-section .image-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 11.5%;
-    width: 4px;
-    height: 35px;
-    background-color: #d97706;
-    z-index: 2;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 11.5%;
+  width: 4px;
+  height: 35px;
+  background-color: #d97706;
+  z-index: 2;
 }
 
 .tobadem-team-section .image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .tobadem-team-section .member-info {
-    margin-top: 5px;
-    background: #ffffff;
-    border-left: 4px solid #d97706;
-    padding: 16px 15px;
-    text-align: left;
-    clip-path: polygon(0 0, 90% 0, 100% 100%, 0% 100%);
+  margin-top: 5px;
+  background: #ffffff;
+  border-left: 4px solid #d97706;
+  padding: 16px 15px;
+  text-align: left;
+  clip-path: polygon(0 0, 90% 0, 100% 100%, 0% 100%);
 }
 
 .tobadem-team-section .member-name {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #0f172a;
-    letter-spacing: -0.3px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.3px;
 }
 
 .tobadem-team-section .member-role {
-    font-size: 0.9rem;
-    color: #d97706;
-    font-weight: 600;
-    margin-top: 3px;
+  font-size: 0.9rem;
+  color: #d97706;
+  font-weight: 600;
+  margin-top: 3px;
 }
 
 .tobadem-team-section .slide-btn {
-    position: absolute;
-    right: -25px;
-    top: 45%;
-    transform: translateY(-50%);
-    width: 46px;
-    height: 46px;
-    border-radius: 6px;
-    background-color: #d97706;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
-    transition: background-color 0.2s, transform 0.2s;
-    z-index: 10;
-    user-select: none;
-    -webkit-user-select: none;
+  position: absolute;
+  right: -25px;
+  top: 45%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 6px;
+  background-color: #d97706;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
+  transition: background-color 0.2s, transform 0.2s;
+  z-index: 10;
+  user-select: none;
 }
 
 .tobadem-team-section .slide-btn:hover {
-    background-color: #b45309;
-    transform: translateY(-50%) scale(1.03);
+  background-color: #b45309;
+  transform: translateY(-50%) scale(1.03);
 }
 
 .tobadem-team-section .prev-btn {
-    left: -25px;
-    right: auto;
-}
-
-@media (max-width: 1250px) {
-    .tobadem-team-section .next-btn { right: 10px; }
-    .tobadem-team-section .prev-btn { left: 10px; }
+  left: -25px;
+  right: auto;
 }
 
 /* --------------------------------------------------------------------------
-   9. Developer Partners Section
+   9. Developer Partners Section (Marquee)
    -------------------------------------------------------------------------- */
-.developer-partners-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+.developer-partners-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
 }
 
-.partner-card {
+.developer-partners-grid {
+  display: flex !important;
+  gap: 20px;
+  width: max-content;
+  animation: continuousScrollRight 10s linear infinite;
+}
+
+.developer-partners-grid:hover {
+  animation-play-state: paused;
+}
+
+.developer-partners-section .partner-card {
+  flex-shrink: 0;
+  min-width: 220px;
+  text-align: center;
   background: #ffffff;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   padding: 1.2rem 1rem;
-  text-align: center;
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
 }
 
-.partner-card:hover {
+.developer-partners-section .partner-card:hover {
   transform: translateY(-3px);
   border-color: var(--accent);
   box-shadow: var(--shadow-md);
@@ -574,6 +581,12 @@ header {
 /* --------------------------------------------------------------------------
    10. Property Cards & Green Accents
    -------------------------------------------------------------------------- */
+#property-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
 .filter-container {
   display: flex;
   justify-content: center;
@@ -621,15 +634,17 @@ header {
 }
 
 .card-image-wrapper {
-  position: relative;
-  height: 220px;
+  position: relative !important;
+  height: 220px !important;
+  max-height: 220px !important;
   overflow: hidden;
   background-color: #e2e8f0;
 }
 
 .card-img {
   width: 100%;
-  height: 100%;
+  height: 220px !important;
+  max-height: 220px !important;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
@@ -653,19 +668,35 @@ header {
 }
 
 .verification-seal {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  background: var(--brand-green);
-  color: #ffffff;
-  padding: 0.3rem 0.7rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  position: absolute !important;
+  top: 12px !important;
+  right: 12px !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: max-content !important;
+  max-height: max-content !important;
+  padding: 6px 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  border-radius: 6px !important;
+  z-index: 10 !important;
+}
+
+.verification-seal svg {
+  width: 14px !important;
+  height: 14px !important;
+  min-width: 14px !important;
+  fill: currentColor !important;
 }
 
 .card-body {
@@ -745,31 +776,28 @@ header {
 }
 
 /* --------------------------------------------------------------------------
-   11. Testimonials & Client Reviews Slider
+   11. Testimonials & Client Reviews Slider (Marquee)
    -------------------------------------------------------------------------- */
 .reviews-slider-wrapper {
+  overflow: hidden;
+  width: 100%;
   position: relative;
-  max-width: 1000px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
 }
 
 .reviews-track {
   display: flex;
-  gap: 1.5rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 1rem 0.5rem;
-  scrollbar-width: none;
+  gap: 24px;
+  width: max-content;
+  animation: continuousScrollRight 10s linear infinite;
 }
 
-.reviews-track::-webkit-scrollbar {
-  display: none;
+.reviews-track:hover {
+  animation-play-state: paused;
 }
 
 .review-card {
-  flex: 0 0 320px;
+  flex-shrink: 0;
+  width: 320px;
   background: var(--bg-white);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -808,37 +836,20 @@ header {
   color: var(--text-muted);
 }
 
-.slider-btn {
-  background: var(--primary);
-  color: #ffffff;
-  border: none;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  transition: var(--transition);
-  box-shadow: var(--shadow-md);
-}
-
-.slider-btn:hover {
-  background: var(--accent);
-}
-
-.prev-btn {
-  margin-right: 0.5rem;
-}
-
-.next-btn {
-  margin-left: 0.5rem;
+/* --------------------------------------------------------------------------
+   12. SHARED KEYFRAME ANIMATIONS
+   -------------------------------------------------------------------------- */
+@keyframes continuousScrollRight {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 /* --------------------------------------------------------------------------
-   12. Educational Blog Cards Section
+   13. Educational Blog Cards Section
    -------------------------------------------------------------------------- */
 .card {
   background-color: #ffffff;
@@ -868,7 +879,7 @@ header {
 }
 
 /* --------------------------------------------------------------------------
-   13. Contact Section & Forms
+   14. Contact Section & Forms
    -------------------------------------------------------------------------- */
 .contact-wrapper {
   max-width: 650px;
@@ -903,13 +914,87 @@ header {
   border-color: var(--accent);
 }
 
+#formFeedback {
+  margin-top: 12px;
+  display: block;
+  width: 100%;
+}
+
 /* --------------------------------------------------------------------------
-   14. Footer Section
+   15. Modal Reader Mechanics
+   -------------------------------------------------------------------------- */
+.blog-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(6px);
+  z-index: 2000;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.blog-modal-content {
+  background: #ffffff;
+  max-width: 850px;
+  margin: 40px auto;
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+}
+
+.blog-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 2.2rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: var(--transition);
+}
+
+.blog-modal-close:hover {
+  color: var(--primary);
+}
+
+.blog-modal-header h2 {
+  font-size: 2rem;
+  color: var(--primary);
+  margin: 0.8rem 0 0.4rem;
+  line-height: 1.3;
+}
+
+.blog-modal-date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.blog-modal-body {
+  margin-top: 1.5rem;
+  color: var(--text-dark);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.blog-modal-footer {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   16. Footer Section
    -------------------------------------------------------------------------- */
 footer {
-  background-color: var(--primary);
+  background-color: var(--primary) !important;
   color: #ffffff;
   padding: 4rem 1.5rem 1.5rem;
+  position: relative;
 }
 
 .footer-container {
@@ -994,76 +1079,12 @@ footer {
 }
 
 /* --------------------------------------------------------------------------
-   15. Modal Reader Mechanics (Blog & Property)
+   17. Responsive Media Queries
    -------------------------------------------------------------------------- */
-.blog-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 2000;
-  overflow-y: auto;
-  padding: 20px;
+@media (max-width: 1024px) {
+  .tobadem-team-section .team-slider { grid-auto-columns: calc((100% - 40px) / 3); }
 }
 
-.blog-modal-content {
-  background: #ffffff;
-  max-width: 850px;
-  margin: 40px auto;
-  border-radius: var(--radius-lg);
-  padding: 2.5rem;
-  position: relative;
-  box-shadow: var(--shadow-lg);
-}
-
-.blog-modal-close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
-  border: none;
-  font-size: 2.2rem;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: var(--transition);
-}
-
-.blog-modal-close:hover {
-  color: var(--primary);
-}
-
-.blog-modal-header h2 {
-  font-size: 2rem;
-  color: var(--primary);
-  margin: 0.8rem 0 0.4rem;
-  line-height: 1.3;
-}
-
-.blog-modal-date {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.blog-modal-body {
-  margin-top: 1.5rem;
-  color: var(--text-dark);
-  font-size: 1rem;
-  line-height: 1.7;
-}
-
-.blog-modal-footer {
-  margin-top: 2.5rem;
-  text-align: center;
-}
-
-/* --------------------------------------------------------------------------
-   16. Responsive Media Queries & Component Tweaks
-   -------------------------------------------------------------------------- */
 @media (max-width: 992px) {
   .ceo-wrapper {
     flex-direction: column;
@@ -1082,17 +1103,40 @@ footer {
 }
 
 @media (max-width: 768px) {
-  /* Make hamburger button visible on mobile */
-  .menu-toggle {
+  .navbar {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding: 1rem;
   }
 
-  .nav-links {
-    display: none;
+  .logo { order: 1; }
+
+  .menu-toggle {
+    order: 2;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 20px;
+    cursor: pointer;
   }
+
+  .menu-toggle span, 
+  .menu-toggle .bar {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: var(--primary);
+    border-radius: 2px;
+  }
+
+  .nav-links { display: none; }
 
   .nav-links.active {
-    display: flex;
+    display: flex !important;
     flex-direction: column;
     position: absolute;
     top: 100%;
@@ -1100,42 +1144,52 @@ footer {
     width: 100%;
     background: #ffffff;
     padding: 1.5rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
     border-top: 1px solid var(--border-color);
     gap: 1rem;
     text-align: center;
+    z-index: 1000;
   }
 
-  .hero-content h1 {
-    font-size: 2.2rem;
+  .hero-content h1 { font-size: 2.2rem; }
+  .hero-content p { font-size: 1rem; }
+  .hero-btns { flex-direction: column; }
+  .blog-modal-content { padding: 1.5rem; margin: 20px auto; }
+  .blog-modal-header h2 { font-size: 1.5rem; }
+
+  /* Mobile Team Card Adjustments */
+  .team-card {
+    height: auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
   }
 
-  .hero-content p {
-    font-size: 1rem;
+  .team-card .image-container {
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
   }
 
-  .hero-btns {
-    flex-direction: column;
+  .team-card .image-container img {
+    width: 100% !important;
+    height: 280px !important;
+    object-fit: cover !important;
+    display: block !important;
   }
 
-  .blog-modal-content {
-    padding: 1.5rem;
-    margin: 20px auto;
+  .team-card .member-info {
+    margin-top: 0 !important;
+    position: static !important;
+    padding-top: 12px !important;
+    padding-bottom: 16px !important;
+    flex-grow: 0 !important;
   }
 
-  .blog-modal-header h2 {
-    font-size: 1.5rem;
-  }
-
-  .reviews-slider-wrapper {
-    padding: 0 0.5rem;
-  }
-
-  .slider-btn {
-    width: 36px;
-    height: 36px;
-    font-size: 1rem;
-  }
+  .tobadem-team-section .team-slider { grid-auto-columns: calc((100% - 20px) / 2); }
 }
 
 @media (max-width: 600px) {
@@ -1151,255 +1205,46 @@ footer {
   }
 }
 
-/* Form Feedback Layout */
-#formFeedback {
-  margin-top: 12px;
-  display: block;
-  width: 100%;
+@media (max-width: 480px) {
+  .tobadem-team-section .team-slider { grid-auto-columns: 100%; }
 }
 
-/* Property Card Image & Grid Constraints */
-.property-card .card-image-wrapper,
-.property-card .card-img {
-  height: 220px !important;
-  max-height: 220px !important;
-  width: 100%;
-  object-fit: cover;
-}
-
-#property-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-/* --- MOBILE HEADER ALIGNMENT --- */
-@media (max-width: 768px) {
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    padding: 1rem;
-    box-sizing: border-box;
-  }
-
-  .logo {
-    order: 1; /* Forces TOBADEM HOMES to the left */
-  }
-
-  .menu-toggle {
-    order: 2; /* Forces hamburger icon to the right */
-    display: flex !important;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 28px;
-    height: 20px;
-    cursor: pointer;
-  }
-
-  /* Style for the hamburger bars if needed */
-  .menu-toggle span, 
-  .menu-toggle .bar {
-    display: block;
-    height: 3px;
-    width: 100%;
-    background-color: var(--text-dark, #111);
-    border-radius: 2px;
-  }
-
-  /* Dropdown styling when active */
-  .nav-links.active {
-    display: flex !important;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: #ffffff;
-    padding: 1.5rem;
-    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-    z-index: 1000;
-  }
-}
-/* ==========================================
-   TOBADEM HOMES - VERIFIED BADGE OVERRIDE FIX
-   ========================================== */
-.card-image-wrapper {
-  position: relative !important;
-}
-
-.verification-seal {
-  position: absolute !important;
-  top: 12px !important;
-  right: 12px !important;
-  left: auto !important;
-  bottom: auto !important;
-  width: auto !important;
+/* --------------------------------------------------------------------------
+   18. UNIFORM SECTION HEIGHT OVERRIDES (ALWAYS AT THE BOTTOM)
+   -------------------------------------------------------------------------- */
+#about,
+#ceo,
+#team,
+.tobadem-team-section,
+#testimonials,
+#partners,
+.developer-partners-section,
+#blog,
+#contact {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+  min-height: auto !important;
   height: auto !important;
-  max-width: max-content !important;
-  max-height: max-content !important;
-  padding: 6px 12px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-  background-color: #10b981 !important;
-  color: #ffffff !important;
-  font-size: 0.85rem !important;
-  font-weight: 700 !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
-  border-radius: 6px !important;
-  z-index: 10 !important;
-  box-sizing: border-box !important;
 }
 
-.verification-seal svg {
-  width: 14px !important;
-  height: 14px !important;
-  min-width: 14px !important;
-  fill: currentColor !important;
+#properties {
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+  height: auto !important;
 }
 
+#home.hero {
+  min-height: 70vh;
+}
 
-/* --- TOBADEM HOMES: MOBILE TEAM CARD FIX --- */
+section .section-header {
+  margin-top: 0 !important;
+  margin-bottom: 1.5rem !important;
+}
+
 @media (max-width: 768px) {
-  /* 1. Reset card container to fit content strictly */
-  .team-card {
-    height: auto !important;
-    min-height: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-  }
-
-  /* 2. Remove extra height & aspect ratio traps on image container */
-  .team-card .image-container {
-    height: auto !important;
-    min-height: 0 !important;
-    aspect-ratio: auto !important;
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-  }
-
-  .team-card .image-container img {
-    width: 100% !important;
-    height: 280px !important; /* Forces a fixed, clean height for photo */
-    object-fit: cover !important;
-    display: block !important;
-  }
-
-  /* 3. Pull name and title immediately under the image */
-  .team-card .member-info {
-    margin-top: 0 !important;       /* Kills margin-top: auto pushing it to the bottom */
-    position: static !important;    /* Overrides absolute bottom placement */
-    padding-top: 12px !important;   /* Sets a tight 12px gap right under photo */
-    padding-bottom: 16px !important;
-    flex-grow: 0 !important;
+  #about, #ceo, #team, #testimonials, #partners, #blog, #contact {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
   }
 }
-
-
-/* Justify and expand text in About Us section */
-#about p,
-.about-section p,
-.about-content p {
-  text-align: justify !important;
-  text-justify: inter-word !important;
-  max-width: 950px !important; /* Spreads the paragraph wider across desktop screens */
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-/* ==========================================
-   REVIEWS CONTINUOUS RIGHTWARD MARQUEE
-   ========================================== */
-
-.reviews-slider-wrapper {
-  overflow: hidden;
-  width: 100%;
-  position: relative;
-}
-
-.reviews-track {
-  display: flex;
-  gap: 24px;
-  width: max-content;
-  animation: continuousScrollRight 25s linear infinite;
-}
-
-/* Pause scroll when a user hovers to read a review */
-.reviews-track:hover {
-  animation-play-state: paused;
-}
-
-/* Set fixed size so review cards don't collapse */
-.review-card {
-  flex-shrink: 0;
-  width: 320px;
-}
-
-/* Keyframe animation for continuous movement to the RIGHT */
-@keyframes continuousScrollRight {
-  0% {
-    transform: translateX(-50%); /* Start shifted left */
-  }
-  100% {
-    transform: translateX(0); /* Move smoothly to origin */
-  }
-}
-
-
-/* ==========================================
-   DEVELOPER PARTNERS CONTINUOUS RIGHTWARD MARQUEE
-   ========================================== */
-
-.developer-partners-wrapper {
-  overflow: hidden;
-  width: 100%;
-  position: relative;
-}
-
-.developer-partners-grid {
-  display: flex !important; /* Converts grid layout into a horizontal track */
-  gap: 20px;
-  width: max-content;
-  animation: continuousScrollRight 20s linear infinite;
-}
-
-/* Pause animation on hover */
-.developer-partners-grid:hover {
-  animation-play-state: paused;
-}
-
-/* Maintain fixed size so cards don't shrink */
-.developer-partners-section .partner-card {
-  flex-shrink: 0;
-  min-width: 220px;
-  text-align: center;
-}
-
-/* ==========================================
-   INFINITE LEFTWARD MARQUEE ANIMATION
-   ========================================== */
-
-@keyframes continuousScrollLeft {
-  0% {
-    transform: translateX(0); /* Starts at default position */
-  }
-  100% {
-    transform: translateX(-50%); /* Moves left by one full duplicated set */
-  }
-}
-
-/* Apply the updated animation name to the tracks */
-.reviews-track {
-  animation: continuousScrollLeft 25s linear infinite;
-}
-
-.developer-partners-grid {
-  animation: continuousScrollLeft 20s linear infinite;
-}
-
