@@ -327,24 +327,62 @@ function setupInquiryForm() {
 // ==========================================
 const blogPosts = {
   "c-of-o-vs-excision": {
-    category: "Land Banking",
+    category: "Real Estate Legal & Title Perfection",
     title: "Understanding C of O vs. Excision in Land Titles",
     date: "August 15, 2026",
     content: `
       <p class="lead-text" style="font-weight: 600; font-size: 1.1rem; color: var(--primary);">
-        When acquiring land in rapidly expanding commercial and residential hubs, long-term returns aren't determined by location alone—they depend on title security. Buying a prime plot with ambiguous documentation can turn projected capital appreciation into years of costly litigation.
+        When acquiring land in rapidly expanding commercial and residential hubs across Lagos and Ogun State, long-term capital protection depends entirely on title security. Purchasing land without a verified title leaves your hard-earned capital vulnerable to government acquisition, third-party ownership disputes, or complete loss.
       </p>
-      <p>Understanding the structural differences between an <strong>Excision</strong> and a <strong>Certificate of Occupancy (C of O)</strong> is the single most critical step in protecting your property portfolio.</p>
+
+      <h3 style="margin-top: 1.5rem; color: var(--primary);">1. Certificate of Occupancy (C of O)</h3>
+      <p>A Certificate of Occupancy is an official legal document issued by the state government declaring that the holder has legal rights to land ownership for a lease period of 99 years. It is one of the most recognized, secure, and bankable title documents in Nigerian real estate.</p>
+
+      <h3 style="margin-top: 1.5rem; color: var(--primary);">2. Land Excision and Government Gazette</h3>
+      <p>Under the Land Use Act of 1978, all land within a state is vested in the State Governor. An <strong>Excision</strong> is the formal process where the state government releases a portion of land back to the indigenous family or ancestral community for private use and development.</p>
+      <p>When an excision is officially recorded in the government's official registry publication, that document is known as a <strong>Gazette</strong>. Land with a Gazetted Excision is officially free from government acquisition and is legally safe for private title perfection.</p>
+
+      <h3 style="margin-top: 1.5rem; color: var(--primary);">3. Governor’s Consent</h3>
+      <p>Once a Certificate of Occupancy or original grant has been issued for a property, any subsequent sale, transfer, or assignment of ownership requires formal authorization from the State Governor. This required approval process is known as <strong>Governor’s Consent</strong>.</p>
+
+      <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+      <h3 style="color: var(--primary);">The Tobadem Zero-Trust Verification Framework</h3>
+      <p>At Tobadem Homes, we operate on a strict cybersecurity-inspired principle: <em>never assume, always verify</em>. Before any plot is placed in our market portfolio, our team completes a rigorous 3-step audit:</p>
+      <ul>
+        <li><strong>Official Charting:</strong> Coordinates are submitted to the Surveyor General's Office to confirm land is free from committed government acquisition or infrastructure setbacks.</li>
+        <li><strong>Title Traceability:</strong> Authentication of family root titles, Deed of Assignment chains, and official Gazette entry numbers.</li>
+        <li><strong>Physical On-Site Verification:</strong> Ground checks to guarantee no overlap disputes, double allocations, or unrecorded encumbrances.</li>
+      </ul>
     `
   },
   "land-beats-inflation": {
-    category: "Investment Strategy",
+    category: "Strategic Wealth Management",
     title: "Why High-Yield Land Investments Beat Market Inflation",
     date: "August 08, 2026",
     content: `
       <p class="lead-text" style="font-weight: 600; font-size: 1.1rem; color: var(--primary);">
-        When inflation steadily erodes local currency value and stock market volatility leaves traditional portfolios exposed, wealth preservation requires hard assets.
+        When economic inflation steadily erodes local currency purchasing power and stock market volatility leaves traditional wealth portfolios exposed, capital preservation requires hard, tangible assets. High-yield land banking has consistently proven to be the most resilient wealth-preservation strategy in Nigeria.
       </p>
+
+      <h3 style="margin-top: 1.5rem; color: var(--primary);">1. Hard Asset Protection vs. Currency Devaluation</h3>
+      <p>Unlike paper currency held in traditional low-yield savings accounts, land is a finite physical resource. As raw material prices and general living costs rise, real estate values adjust upwards accordingly—acting as an unshakeable hedge against currency devaluation.</p>
+
+      <h3 style="margin-top: 1.5rem; color: var(--primary);">2. Strategic Land Banking in Emerging Growth Hubs</h3>
+      <p>Land banking is the practice of acquiring undeveloped land in strategic expansion corridors ahead of major municipal and private infrastructure developments. Key expansion corridors delivering substantial growth include:</p>
+      <ul>
+        <li><strong>Mowe-Ofada (Ogun State):</strong> Experiencing accelerated residential demand due to modern highway connections and close proximity to Lagos commercial centers.</li>
+        <li><strong>Shagamu & Abeokuta Corridors:</strong> Fast-emerging commercial, industrial, and residential hubs offering accessible entry prices and compound growth potential.</li>
+        <li><strong>Lagos Suburban Corridors:</strong> Prime development zones providing steady double-digit annual capital appreciation.</li>
+      </ul>
+
+      <h3 style="margin-top: 1.5rem; color: var(--primary);">3. Compound Capital Appreciation</h3>
+      <p>Investors who acquire verified plots early in project development stages frequently realize capital appreciation ranging from 50% to over 200% within a 3 to 5-year holding window as road grading, electrical grids, and perimeter security fencing are added.</p>
+
+      <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #e2e8f0;">
+
+      <h3 style="color: var(--primary);">Maximizing Yields with Tobadem Homes</h3>
+      <p>To capture maximum returns without risking capital, Tobadem Homes provides complete guidance for local investors and Diaspora buyers—combining verified legal title due diligence with high-growth location selection.</p>
     `
   }
 };
