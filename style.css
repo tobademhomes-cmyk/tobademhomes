@@ -253,32 +253,36 @@ header {
 }
 
 /* --------------------------------------------------------------------------
-   5. Hero Section
+   5. Hero Section (Responsive Auto-Height)
    -------------------------------------------------------------------------- */
-.hero {
+.hero,
+#home.hero {
   background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), 
-              url('images/hero-photo.jpeg') center/cover no-repeat;
-  height: 55vh;
-  min-height: 380px;
+              url('images/hero-photo.jpeg') center/cover no-repeat !important;
+  height: auto !important;
+  min-height: 480px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 1.5rem;
+  padding: 5rem 1.5rem 4rem 1.5rem !important;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-content {
   max-width: 800px;
+  width: 100%;
 }
 
 .hero-content h1 {
-  color: #ffffff;
+  color: #ffffff !important;
   font-size: 3rem;
   margin-bottom: 1rem;
 }
 
 .hero-content p {
-  color: #e2e8f0;
+  color: #e2e8f0 !important;
   font-size: 1.25rem;
   margin-bottom: 2rem;
 }
@@ -398,7 +402,7 @@ header {
 }
 
 /* --------------------------------------------------------------------------
-   8. Meet Our Team Section (Scope-Protected)
+   8. Meet Our Team Section (Scope-Protected & Mobile Slider Optimized)
    -------------------------------------------------------------------------- */
 .tobadem-team-section {
   text-align: center;
@@ -440,6 +444,7 @@ header {
   scroll-behavior: smooth;
   scrollbar-width: none;
   padding-bottom: 25px;
+  scroll-snap-type: x mandatory;
 }
 
 .tobadem-team-section .team-slider::-webkit-scrollbar {
@@ -455,6 +460,12 @@ header {
   overflow: hidden;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   border: 1px solid #f1f5f9;
+  scroll-snap-align: center;
+}
+
+/* Guarantee CEO card always snaps as card #1 */
+.tobadem-team-section .team-card:first-child {
+  scroll-snap-align: start;
 }
 
 .tobadem-team-section .image-container {
@@ -927,7 +938,7 @@ header {
 }
 
 /* --------------------------------------------------------------------------
-   15. Modal Reader Mechanics
+   15. Modal Reader Mechanics (Justified Body Text)
    -------------------------------------------------------------------------- */
 .blog-modal {
   display: none;
@@ -981,11 +992,14 @@ header {
   color: var(--text-muted);
 }
 
-.blog-modal-body {
+.blog-modal-body,
+.blog-modal-body p {
   margin-top: 1.5rem;
   color: var(--text-dark);
   font-size: 1rem;
   line-height: 1.7;
+  text-align: justify !important;
+  text-justify: inter-word !important;
 }
 
 .blog-modal-footer {
@@ -1108,10 +1122,6 @@ footer {
   height: auto !important;
 }
 
-#home.hero {
-  min-height: 50vh !important;
-}
-
 section .section-header {
   margin-top: 0 !important;
   margin-bottom: 1.5rem !important;
@@ -1128,7 +1138,7 @@ section .section-header {
   }
 }
 
-/* Tablets */
+/* Tablets & Mobile Landscape */
 @media (max-width: 992px) {
   .ceo-wrapper {
     flex-direction: column;
@@ -1136,9 +1146,18 @@ section .section-header {
 
   .ceo-image-container {
     flex: initial;
-    width: 100%;
-    max-width: 480px;
-    margin: 0 auto;
+    width: 100% !important;
+    max-width: 480px !important;
+    height: auto !important;
+    margin: 0 auto 1.5rem auto !important;
+    display: block !important;
+  }
+
+  .ceo-img {
+    width: 100% !important;
+    height: 380px !important;
+    object-fit: cover !important;
+    display: block !important;
   }
 
   .footer-container {
@@ -1146,7 +1165,7 @@ section .section-header {
   }
 }
 
-/* Small Tablets & Mobile Landscape */
+/* Small Tablets & Handheld Devices */
 @media (max-width: 768px) {
   #about, #ceo, #team, #testimonials, #partners, #blog, #contact {
     padding-top: 2rem !important;
@@ -1201,22 +1220,75 @@ section .section-header {
     z-index: 1000;
   }
 
-  .hero-content h1 { font-size: 2.2rem; }
-  .hero-content p { font-size: 1rem; }
-  .hero-btns { flex-direction: column; }
+  /* Hero Mobile Fix for Small Displays */
+  .hero,
+  #home.hero {
+    height: auto !important;
+    min-height: 0 !important;
+    padding-top: 5.5rem !important; /* Prevents text from hiding under fixed navbar */
+    padding-bottom: 3.5rem !important;
+  }
+
+  .hero-content h1 { 
+    font-size: 1.85rem !important; 
+    line-height: 1.25 !important;
+    margin-bottom: 0.8rem !important;
+  }
+
+  .hero-content p { 
+    font-size: 0.95rem !important; 
+    line-height: 1.5 !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .hero-btns { 
+    flex-direction: column !important; 
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .hero-btns .btn-primary,
+  .hero-btns .btn-secondary {
+    width: 100%;
+    display: block;
+  }
+
   .blog-modal-content { padding: 1.5rem; margin: 20px auto; }
   .blog-modal-header h2 { font-size: 1.5rem; }
 
-  /* Mobile Team Card Structure */
-  .team-card {
+  /* ==========================================================================
+     MOBILE TEAM SLIDER & BUTTON REPOSITIONING (< 768px)
+     ========================================================================== */
+  .tobadem-team-section .slider-wrapper {
+    padding-bottom: 65px !important; /* Reserves space below cards for arrow buttons */
+  }
+
+  .tobadem-team-section .team-slider { 
+    display: flex !important;
+    gap: 16px !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px !important;
+  }
+
+  .tobadem-team-section .team-card {
+    flex: 0 0 78vw !important;
+    max-width: 280px !important;
     height: auto !important;
     min-height: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
+    scroll-snap-align: center !important;
   }
 
-  .team-card .image-container {
+  /* Force CEO Card (Member 1) to snap to start */
+  .tobadem-team-section .team-card:first-child {
+    scroll-snap-align: start !important;
+  }
+
+  .tobadem-team-section .team-card .image-container {
     height: auto !important;
     min-height: 0 !important;
     aspect-ratio: auto !important;
@@ -1224,14 +1296,14 @@ section .section-header {
     padding-bottom: 0 !important;
   }
 
-  .team-card .image-container img {
+  .tobadem-team-section .team-card .image-container img {
     width: 100% !important;
-    height: 280px !important;
+    height: 260px !important;
     object-fit: cover !important;
     display: block !important;
   }
 
-  .team-card .member-info {
+  .tobadem-team-section .team-card .member-info {
     margin-top: 0 !important;
     position: static !important;
     padding-top: 12px !important;
@@ -1239,38 +1311,24 @@ section .section-header {
     flex-grow: 0 !important;
   }
 
-  .tobadem-team-section .team-slider { 
-    grid-auto-columns: calc((100% - 20px) / 2); 
-  }
-}
-
-/* Standard Mobile Screens */
-@media (max-width: 600px) {
+  /* Force Navigation Buttons Visible & Positioned Bottom-Center */
   .tobadem-team-section .slide-btn {
-    display: none !important;
+    display: flex !important;
+    top: auto !important;
+    bottom: 5px !important;
+    transform: none !important;
+    width: 46px !important;
+    height: 46px !important;
+    z-index: 20 !important;
   }
 
-  .tobadem-team-section .team-slider {
-    scroll-snap-type: x mandatory;
-    gap: 15px;
+  .tobadem-team-section .prev-btn {
+    left: calc(50% - 54px) !important;
+    right: auto !important;
   }
 
-  .tobadem-team-section .team-card {
-    scroll-snap-align: center;
-    flex: 0 0 220px;
-    max-width: 220px;
-  }
-
-  .tobadem-team-section .team-slider img,
-  .tobadem-team-section .team-card img {
-    height: 200px !important;
-  }
-}
-
-/* Small Mobile Screens */
-@media (max-width: 480px) {
-  .tobadem-team-section .team-slider { 
-    grid-auto-columns: 85% !important; 
-    justify-content: center;
+  .tobadem-team-section .next-btn {
+    left: calc(50% + 8px) !important;
+    right: auto !important;
   }
 }
