@@ -46,7 +46,7 @@ body {
   font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
   color: var(--text-dark);
-  background-color: var(--bg-light); /* Single unified background color */
+  background-color: var(--bg-light);
   overflow-x: hidden;
 }
 
@@ -91,7 +91,7 @@ textarea:focus-visible {
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 1.5rem; /* Prevents container from inflating section heights */
+  padding: 0 1.5rem;
 }
 
 /* Section transparent overrides for unified background */
@@ -252,12 +252,14 @@ header {
   transition: 0.3s;
 }
 
-
+/* --------------------------------------------------------------------------
+   5. Hero Section
+   -------------------------------------------------------------------------- */
 .hero {
   background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), 
               url('images/hero-photo.jpeg') center/cover no-repeat;
-  height: 55vh;         /* Reduced from 80vh (Controls height on desktop) */
-  min-height: 380px;     /* Reduced from 500px (Prevents it from shrinking too much) */
+  height: 55vh;
+  min-height: 380px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -337,6 +339,7 @@ header {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   object-fit: cover;
+  object-position: center top;
 }
 
 .ceo-badge {
@@ -474,10 +477,13 @@ header {
   z-index: 2;
 }
 
-.tobadem-team-section .image-container img {
+.tobadem-team-section .image-container img,
+.team-card img,
+.team-member-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top !important;
 }
 
 .tobadem-team-section .member-info {
@@ -1079,12 +1085,50 @@ footer {
 }
 
 /* --------------------------------------------------------------------------
-   17. Responsive Media Queries
+   17. UNIFORM SECTION HEIGHT OVERRIDES
    -------------------------------------------------------------------------- */
-@media (max-width: 1024px) {
-  .tobadem-team-section .team-slider { grid-auto-columns: calc((100% - 40px) / 3); }
+#about,
+#ceo,
+#team,
+.tobadem-team-section,
+#testimonials,
+#partners,
+.developer-partners-section,
+#blog,
+#contact {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+  min-height: auto !important;
+  height: auto !important;
 }
 
+#properties {
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+  height: auto !important;
+}
+
+#home.hero {
+  min-height: 50vh !important;
+}
+
+section .section-header {
+  margin-top: 0 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* --------------------------------------------------------------------------
+   18. CONSOLIDATED RESPONSIVE MEDIA QUERIES
+   -------------------------------------------------------------------------- */
+
+/* Large Tablets / Laptops */
+@media (max-width: 1024px) {
+  .tobadem-team-section .team-slider { 
+    grid-auto-columns: calc((100% - 40px) / 3); 
+  }
+}
+
+/* Tablets */
 @media (max-width: 992px) {
   .ceo-wrapper {
     flex-direction: column;
@@ -1102,7 +1146,13 @@ footer {
   }
 }
 
+/* Small Tablets & Mobile Landscape */
 @media (max-width: 768px) {
+  #about, #ceo, #team, #testimonials, #partners, #blog, #contact {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
   .navbar {
     display: flex;
     justify-content: space-between;
@@ -1157,7 +1207,7 @@ footer {
   .blog-modal-content { padding: 1.5rem; margin: 20px auto; }
   .blog-modal-header h2 { font-size: 1.5rem; }
 
-  /* Mobile Team Card Adjustments */
+  /* Mobile Team Card Structure */
   .team-card {
     height: auto !important;
     min-height: 0 !important;
@@ -1189,12 +1239,24 @@ footer {
     flex-grow: 0 !important;
   }
 
-  .tobadem-team-section .team-slider { grid-auto-columns: calc((100% - 20px) / 2); }
+  .tobadem-team-section .team-slider { 
+    grid-auto-columns: calc((100% - 20px) / 2); 
+  }
 }
 
+/* Standard Mobile Screens */
 @media (max-width: 600px) {
-  .tobadem-team-section .team-slider > div,
+  .tobadem-team-section .slide-btn {
+    display: none !important;
+  }
+
+  .tobadem-team-section .team-slider {
+    scroll-snap-type: x mandatory;
+    gap: 15px;
+  }
+
   .tobadem-team-section .team-card {
+    scroll-snap-align: center;
     flex: 0 0 220px;
     max-width: 220px;
   }
@@ -1205,1295 +1267,10 @@ footer {
   }
 }
 
+/* Small Mobile Screens */
 @media (max-width: 480px) {
-  .tobadem-team-section .team-slider { grid-auto-columns: 100%; }
-}
-
-/* --------------------------------------------------------------------------
-   18. UNIFORM SECTION HEIGHT OVERRIDES (ALWAYS AT THE BOTTOM)
-   -------------------------------------------------------------------------- */
-#about,
-#ceo,
-#team,
-.tobadem-team-section,
-#testimonials,
-#partners,
-.developer-partners-section,
-#blog,
-#contact {
-  padding-top: 3rem !important;
-  padding-bottom: 3rem !important;
-  min-height: auto !important;
-  height: auto !important;
-}
-
-#properties {
-  padding-top: 4rem !important;
-  padding-bottom: 4rem !important;
-  height: auto !important;
-}
-
-#home.hero {
-  min-height: 70vh;
-}
-
-section .section-header {
-  margin-top: 0 !important;
-  margin-bottom: 1.5rem !important;
-}
-
-@media (max-width: 768px) {
-  #about, #ceo, #team, #testimonials, #partners, #blog, #contact {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
-  }
-}/* ==========================================================================
-   TOBADEM HOMES - MASTER STYLESHEET (PRODUCTION READY)
-   ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   1. CSS Custom Properties / Design Tokens
-   -------------------------------------------------------------------------- */
-:root {
-  --primary: #0f172a;          /* Deep Navy / Executive Base */
-  --primary-light: #1e293b;    /* Lighter Navy Surface */
-  --accent: #d97706;          /* Premium Gold / Amber */
-  --accent-hover: #b45309;    /* Deep Gold Hover */
-  --brand-green: #16a34a;      /* Original Verified Seal Green */
-  --brand-green-hover: #15803d;/* Darker Green Hover */
-  --brand-green-fade: rgba(22, 163, 74, 0.12); /* Soft Faded Green Badge BG */
-  --bg-light: #f8fafc;         /* Cool Light Grey Background */
-  --bg-white: #ffffff;         /* Pure White Surface */
-  --text-dark: #334155;        /* Charcoal Body Text */
-  --text-muted: #64748b;       /* Muted / Secondary Text */
-  --border-color: #e2e8f0;     /* Border Light Neutral */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
-  --transition: all 0.3s ease;
-  --max-width: 1200px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-}
-
-/* --------------------------------------------------------------------------
-   2. Global Resets & Base Styles
-   -------------------------------------------------------------------------- */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  font-size: 16px;
-}
-
-body {
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  line-height: 1.6;
-  color: var(--text-dark);
-  background-color: var(--bg-light); /* Single unified background color */
-  overflow-x: hidden;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: var(--primary);
-  line-height: 1.25;
-  font-weight: 700;
-}
-
-p {
-  margin-bottom: 1rem;
-}
-
-p:last-child {
-  margin-bottom: 0;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-  transition: var(--transition);
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Accessibility Focus States */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* --------------------------------------------------------------------------
-   3. Common Layout & Utilities
-   -------------------------------------------------------------------------- */
-.container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 1.5rem; /* Prevents container from inflating section heights */
-}
-
-/* Section transparent overrides for unified background */
-section,
-.bg-light,
-.developer-partners-section {
-  background-color: transparent !important;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.section-header h2 {
-  font-size: 2.25rem;
-  margin-bottom: 0.5rem;
-}
-
-.section-header p {
-  color: var(--text-muted);
-  font-size: 1.1rem;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.category {
-  display: inline-block;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 700;
-  color: var(--accent);
-  background: rgba(217, 119, 6, 0.1);
-  padding: 0.25rem 0.75rem;
-  border-radius: 50px;
-  margin-bottom: 0.5rem;
-}
-
-.lead {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-/* Button Variants */
-.btn-primary {
-  display: inline-block;
-  background-color: var(--accent);
-  color: #ffffff;
-  padding: 0.8rem 1.6rem;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  text-align: center;
-  transition: var(--transition);
-}
-
-.btn-primary:hover {
-  background-color: var(--accent-hover);
-  transform: translateY(-2px);
-}
-
-.btn-secondary {
-  display: inline-block;
-  background-color: transparent;
-  color: #ffffff;
-  padding: 0.8rem 1.6rem;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  border: 2px solid #ffffff;
-  cursor: pointer;
-  text-align: center;
-  transition: var(--transition);
-}
-
-.btn-secondary:hover {
-  background-color: #ffffff;
-  color: var(--primary);
-}
-
-/* --------------------------------------------------------------------------
-   4. Navigation Bar & Mobile Menu Toggle Styles
-   -------------------------------------------------------------------------- */
-header {
-  position: sticky;
-  top: 0;
-  background-color: #ffffff !important;
-  z-index: 1000;
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 1.2rem 1.5rem;
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--primary);
-  letter-spacing: 1px;
-}
-
-.logo span {
-  color: var(--accent);
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  align-items: center;
-  gap: 1.8rem;
-}
-
-.nav-links a {
-  color: var(--text-dark);
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-.nav-links a:hover {
-  color: var(--accent);
-}
-
-.btn-nav {
-  background-color: var(--accent);
-  color: #ffffff !important;
-  padding: 0.55rem 1.2rem;
-  border-radius: var(--radius-sm);
-}
-
-.btn-nav:hover {
-  background-color: var(--accent-hover) !important;
-}
-
-.menu-toggle {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  gap: 5px;
-}
-
-.menu-toggle .bar {
-  width: 25px;
-  height: 3px;
-  background-color: var(--primary, #333);
-  transition: 0.3s;
-}
-
-
-.hero {
-  background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), 
-              url('images/hero-photo.jpeg') center/cover no-repeat;
-  height: 55vh;         /* Reduced from 80vh (Controls height on desktop) */
-  min-height: 380px;     /* Reduced from 500px (Prevents it from shrinking too much) */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0 1.5rem;
-}
-
-.hero-content {
-  max-width: 800px;
-}
-
-.hero-content h1 {
-  color: #ffffff;
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.hero-content p {
-  color: #e2e8f0;
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
-}
-
-.hero-btns {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-/* --------------------------------------------------------------------------
-   6. About Us Section
-   -------------------------------------------------------------------------- */
-#about p,
-.about-section p,
-.about-content p {
-  text-align: justify !important;
-  text-justify: inter-word !important;
-  max-width: 950px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-
-.about-text {
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.about-text h2 {
-  font-size: 2.25rem;
-  margin-bottom: 1rem;
-}
-
-.about-text p {
-  margin-bottom: 1.2rem;
-}
-
-/* --------------------------------------------------------------------------
-   7. CEO / Leadership Section
-   -------------------------------------------------------------------------- */
-.ceo-wrapper {
-  display: flex;
-  align-items: flex-start;
-  gap: 3.5rem;
-}
-
-.ceo-image-container {
-  flex: 0 0 380px;
-  position: relative;
-  background-color: var(--border-color);
-  border-radius: var(--radius-lg);
-}
-
-.ceo-img {
-  width: 100%;
-  height: 460px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  object-fit: cover;
-}
-
-.ceo-badge {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  background-color: var(--accent);
-  color: #ffffff;
-  padding: 0.5rem 1rem;
-  font-weight: 700;
-  font-size: 0.85rem;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-sm);
-}
-
-.ceo-content {
-  flex: 1;
-}
-
-.ceo-content h2 {
-  font-size: 2.2rem;
-  margin-bottom: 0.2rem;
-}
-
-.ceo-name {
-  color: var(--accent);
-  font-size: 1.4rem;
-  margin-bottom: 1.2rem;
-}
-
-/* CEO Text Justification */
-#ceo .ceo-content p,
-#ceo .ceo-content .lead {
-  text-align: justify !important;
-  text-justify: inter-word !important;
-}
-
-.ceo-highlights {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  margin-top: 1.5rem;
-}
-
-.highlight-item {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-.highlight-item i {
-  color: var(--accent);
-  font-size: 1.2rem;
-}
-
-/* --------------------------------------------------------------------------
-   8. Meet Our Team Section (Scope-Protected)
-   -------------------------------------------------------------------------- */
-.tobadem-team-section {
-  text-align: center;
-}
-
-.tobadem-team-section .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.tobadem-team-section .section-title {
-  color: #0f172a;
-  font-size: 2.25rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 12px;
-}
-
-.tobadem-team-section .section-subtitle {
-  color: #64748b;
-  font-size: 1rem;
-  max-width: 700px;
-  margin: 0 auto 50px auto;
-  line-height: 1.6;
-}
-
-.tobadem-team-section .slider-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.tobadem-team-section .team-slider {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: calc((100% - 60px) / 4);
-  gap: 20px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  padding-bottom: 25px;
-}
-
-.tobadem-team-section .team-slider::-webkit-scrollbar {
-  display: none;
-}
-
-.tobadem-team-section .team-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  border: 1px solid #f1f5f9;
-}
-
-.tobadem-team-section .image-container {
-  width: 100%;
-  height: 340px;
-  overflow: hidden;
-  clip-path: polygon(12% 0%, 100% 0%, 88% 100%, 0% 100%);
-  background: #f8fafc;
-  position: relative;
-}
-
-.tobadem-team-section .image-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 11.5%;
-  width: 4px;
-  height: 35px;
-  background-color: #d97706;
-  z-index: 2;
-}
-
-.tobadem-team-section .image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.tobadem-team-section .member-info {
-  margin-top: 5px;
-  background: #ffffff;
-  border-left: 4px solid #d97706;
-  padding: 16px 15px;
-  text-align: left;
-  clip-path: polygon(0 0, 90% 0, 100% 100%, 0% 100%);
-}
-
-.tobadem-team-section .member-name {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #0f172a;
-  letter-spacing: -0.3px;
-}
-
-.tobadem-team-section .member-role {
-  font-size: 0.9rem;
-  color: #d97706;
-  font-weight: 600;
-  margin-top: 3px;
-}
-
-.tobadem-team-section .slide-btn {
-  position: absolute;
-  right: -25px;
-  top: 45%;
-  transform: translateY(-50%);
-  width: 46px;
-  height: 46px;
-  border-radius: 6px;
-  background-color: #d97706;
-  color: #ffffff;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
-  transition: background-color 0.2s, transform 0.2s;
-  z-index: 10;
-  user-select: none;
-}
-
-.tobadem-team-section .slide-btn:hover {
-  background-color: #b45309;
-  transform: translateY(-50%) scale(1.03);
-}
-
-.tobadem-team-section .prev-btn {
-  left: -25px;
-  right: auto;
-}
-
-/* --------------------------------------------------------------------------
-   9. Developer Partners Section (Marquee)
-   -------------------------------------------------------------------------- */
-.developer-partners-wrapper {
-  overflow: hidden;
-  width: 100%;
-  position: relative;
-}
-
-.developer-partners-grid {
-  display: flex !important;
-  gap: 20px;
-  width: max-content;
-  animation: continuousScrollRight 10s linear infinite;
-}
-
-.developer-partners-grid:hover {
-  animation-play-state: paused;
-}
-
-.developer-partners-section .partner-card {
-  flex-shrink: 0;
-  min-width: 220px;
-  text-align: center;
-  background: #ffffff;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 1.2rem 1rem;
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
-}
-
-.developer-partners-section .partner-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--accent);
-  box-shadow: var(--shadow-md);
-}
-
-.partner-card span {
-  font-weight: 700;
-  color: var(--primary);
-  font-size: 1rem;
-}
-
-/* --------------------------------------------------------------------------
-   10. Property Cards & Green Accents
-   -------------------------------------------------------------------------- */
-#property-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.filter-container {
-  display: flex;
-  justify-content: center;
-  gap: 0.8rem;
-  margin-bottom: 2.5rem;
-  flex-wrap: wrap;
-  grid-column: 1 / -1;
-}
-
-.filter-btn {
-  background-color: #ffffff;
-  border: 1px solid var(--border-color);
-  padding: 0.6rem 1.2rem;
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: 600;
-  color: var(--text-dark);
-  transition: var(--transition);
-}
-
-.filter-btn:hover,
-.filter-btn.active {
-  background-color: var(--primary);
-  color: #ffffff;
-  border-color: var(--primary);
-}
-
-.property-card {
-  background: #ffffff;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-color);
-  display: flex;
-  flex-direction: column;
-  transition: var(--transition);
-  max-width: 380px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.property-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
-}
-
-.card-image-wrapper {
-  position: relative !important;
-  height: 220px !important;
-  max-height: 220px !important;
-  overflow: hidden;
-  background-color: #e2e8f0;
-}
-
-.card-img {
-  width: 100%;
-  height: 220px !important;
-  max-height: 220px !important;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.property-card:hover .card-img {
-  transform: scale(1.05);
-}
-
-.card-badge {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  background: var(--brand-green-fade);
-  color: var(--brand-green-hover);
-  border: 1px solid rgba(22, 163, 74, 0.3);
-  backdrop-filter: blur(4px);
-  padding: 0.35rem 0.85rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  border-radius: 50px;
-}
-
-.verification-seal {
-  position: absolute !important;
-  top: 12px !important;
-  right: 12px !important;
-  left: auto !important;
-  bottom: auto !important;
-  width: auto !important;
-  height: auto !important;
-  max-width: max-content !important;
-  max-height: max-content !important;
-  padding: 6px 12px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-  background-color: #10b981 !important;
-  color: #ffffff !important;
-  font-size: 0.85rem !important;
-  font-weight: 700 !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
-  border-radius: 6px !important;
-  z-index: 10 !important;
-}
-
-.verification-seal svg {
-  width: 14px !important;
-  height: 14px !important;
-  min-width: 14px !important;
-  fill: currentColor !important;
-}
-
-.card-body {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.card-title {
-  font-size: 1.2rem;
-  margin-bottom: 0.4rem;
-}
-
-.card-location {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 1rem;
-}
-
-.card-pricing-block {
-  background-color: var(--bg-light);
-  padding: 0.8rem 1rem;
-  border-radius: var(--radius-sm);
-  margin-bottom: 1rem;
-}
-
-.price-main {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.3rem;
-}
-
-.price-label {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
-
-.price-value {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--accent);
-}
-
-.deposit-tag {
-  font-size: 0.85rem;
-  color: var(--text-dark);
-}
-
-.card-features-list {
-  list-style: none;
-  margin-bottom: 1.5rem;
-  flex-grow: 1;
-}
-
-.btn-verify-action {
-  display: block;
-  width: 100%;
-  background-color: var(--brand-green);
-  color: #ffffff;
-  text-align: center;
-  padding: 0.8rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.9rem;
-  font-weight: 700;
-  transition: var(--transition);
-}
-
-.btn-verify-action:hover {
-  background-color: var(--brand-green-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.25);
-}
-
-/* --------------------------------------------------------------------------
-   11. Testimonials & Client Reviews Slider (Marquee)
-   -------------------------------------------------------------------------- */
-.reviews-slider-wrapper {
-  overflow: hidden;
-  width: 100%;
-  position: relative;
-}
-
-.reviews-track {
-  display: flex;
-  gap: 24px;
-  width: max-content;
-  animation: continuousScrollRight 10s linear infinite;
-}
-
-.reviews-track:hover {
-  animation-play-state: paused;
-}
-
-.review-card {
-  flex-shrink: 0;
-  width: 320px;
-  background: var(--bg-white);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 1.8rem;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.review-stars {
-  color: var(--accent);
-  margin-bottom: 0.8rem;
-  font-size: 0.9rem;
-}
-
-.review-text {
-  font-size: 0.95rem;
-  color: var(--text-dark);
-  font-style: italic;
-  margin-bottom: 1.2rem;
-}
-
-.review-author {
-  display: flex;
-  flex-direction: column;
-}
-
-.review-author strong {
-  color: var(--primary);
-  font-size: 0.95rem;
-}
-
-.review-author span {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-/* --------------------------------------------------------------------------
-   12. SHARED KEYFRAME ANIMATIONS
-   -------------------------------------------------------------------------- */
-@keyframes continuousScrollRight {
-  0% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-/* --------------------------------------------------------------------------
-   13. Educational Blog Cards Section
-   -------------------------------------------------------------------------- */
-.card {
-  background-color: #ffffff;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
-  display: flex;
-  flex-direction: column;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
-}
-
-.card-body h3 {
-  font-size: 1.3rem;
-  margin-top: 0.4rem;
-  margin-bottom: 0.4rem;
-}
-
-.card-body .date {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 1rem;
-}
-
-/* --------------------------------------------------------------------------
-   14. Contact Section & Forms
-   -------------------------------------------------------------------------- */
-.contact-wrapper {
-  max-width: 650px;
-  margin: 0 auto;
-  background-color: #ffffff;
-  padding: 2.5rem;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-color);
-}
-
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
-.contact-form input,
-.contact-form textarea {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  font-family: inherit;
-  font-size: 0.95rem;
-  outline: none;
-  transition: var(--transition);
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-  border-color: var(--accent);
-}
-
-#formFeedback {
-  margin-top: 12px;
-  display: block;
-  width: 100%;
-}
-
-/* --------------------------------------------------------------------------
-   15. Modal Reader Mechanics
-   -------------------------------------------------------------------------- */
-.blog-modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(6px);
-  z-index: 2000;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-.blog-modal-content {
-  background: #ffffff;
-  max-width: 850px;
-  margin: 40px auto;
-  border-radius: var(--radius-lg);
-  padding: 2.5rem;
-  position: relative;
-  box-shadow: var(--shadow-lg);
-}
-
-.blog-modal-close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
-  border: none;
-  font-size: 2.2rem;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: var(--transition);
-}
-
-.blog-modal-close:hover {
-  color: var(--primary);
-}
-
-.blog-modal-header h2 {
-  font-size: 2rem;
-  color: var(--primary);
-  margin: 0.8rem 0 0.4rem;
-  line-height: 1.3;
-}
-
-.blog-modal-date {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.blog-modal-body {
-  margin-top: 1.5rem;
-  color: var(--text-dark);
-  font-size: 1rem;
-  line-height: 1.7;
-}
-
-.blog-modal-footer {
-  margin-top: 2.5rem;
-  text-align: center;
-}
-
-/* --------------------------------------------------------------------------
-   16. Footer Section
-   -------------------------------------------------------------------------- */
-footer {
-  background-color: var(--primary) !important;
-  color: #ffffff;
-  padding: 4rem 1.5rem 1.5rem;
-  position: relative;
-}
-
-.footer-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 3rem;
-  margin-bottom: 3rem;
-}
-
-.footer-brand h3 {
-  color: #ffffff;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.footer-brand h3 span {
-  color: var(--accent);
-}
-
-.footer-brand p {
-  color: #94a3b8;
-  max-width: 450px;
-}
-
-.footer-socials h4 {
-  color: #ffffff;
-  font-size: 1.2rem;
-  margin-bottom: 0.8rem;
-}
-
-.footer-socials p {
-  color: #94a3b8;
-  font-size: 0.9rem;
-  margin-bottom: 1.2rem;
-}
-
-.social-icons {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-}
-
-.social-icons a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background-color: var(--primary-light);
-  color: #ffffff;
-  border-radius: 50%;
-  font-size: 1rem;
-}
-
-.social-icons a:hover {
-  background-color: var(--accent);
-}
-
-.social-icons a.whatsapp-btn {
-  width: auto;
-  border-radius: 50px;
-  padding: 0 1.2rem;
-  background-color: #25d366;
-  gap: 0.5rem;
-  font-weight: 600;
-  font-size: 0.85rem;
-}
-
-.social-icons a.whatsapp-btn:hover {
-  background-color: #1eb954;
-}
-
-.footer-bottom {
-  text-align: center;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--primary-light);
-  color: #64748b;
-  font-size: 0.85rem;
-}
-
-/* --------------------------------------------------------------------------
-   17. Responsive Media Queries
-   -------------------------------------------------------------------------- */
-@media (max-width: 1024px) {
-  .tobadem-team-section .team-slider { grid-auto-columns: calc((100% - 40px) / 3); }
-}
-
-@media (max-width: 992px) {
-  .ceo-wrapper {
-    flex-direction: column;
-  }
-
-  .ceo-image-container {
-    flex: initial;
-    width: 100%;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-
-  .footer-container {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    padding: 1rem;
-  }
-
-  .logo { order: 1; }
-
-  .menu-toggle {
-    order: 2;
-    display: flex !important;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 28px;
-    height: 20px;
-    cursor: pointer;
-  }
-
-  .menu-toggle span, 
-  .menu-toggle .bar {
-    display: block;
-    height: 3px;
-    width: 100%;
-    background-color: var(--primary);
-    border-radius: 2px;
-  }
-
-  .nav-links { display: none; }
-
-  .nav-links.active {
-    display: flex !important;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: #ffffff;
-    padding: 1.5rem;
-    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-    border-top: 1px solid var(--border-color);
-    gap: 1rem;
-    text-align: center;
-    z-index: 1000;
-  }
-
-  .hero-content h1 { font-size: 2.2rem; }
-  .hero-content p { font-size: 1rem; }
-  .hero-btns { flex-direction: column; }
-  .blog-modal-content { padding: 1.5rem; margin: 20px auto; }
-  .blog-modal-header h2 { font-size: 1.5rem; }
-
-  /* Mobile Team Card Adjustments */
-  .team-card {
-    height: auto !important;
-    min-height: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-  }
-
-  .team-card .image-container {
-    height: auto !important;
-    min-height: 0 !important;
-    aspect-ratio: auto !important;
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-  }
-
-  .team-card .image-container img {
-    width: 100% !important;
-    height: 280px !important;
-    object-fit: cover !important;
-    display: block !important;
-  }
-
-  .team-card .member-info {
-    margin-top: 0 !important;
-    position: static !important;
-    padding-top: 12px !important;
-    padding-bottom: 16px !important;
-    flex-grow: 0 !important;
-  }
-
-  .tobadem-team-section .team-slider { grid-auto-columns: calc((100% - 20px) / 2); }
-}
-
-@media (max-width: 600px) {
-  .tobadem-team-section .team-slider > div,
-  .tobadem-team-section .team-card {
-    flex: 0 0 220px;
-    max-width: 220px;
-  }
-
-  .tobadem-team-section .team-slider img,
-  .tobadem-team-section .team-card img {
-    height: 200px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .tobadem-team-section .team-slider { grid-auto-columns: 100%; }
-}
-
-/* --------------------------------------------------------------------------
-   18. UNIFORM SECTION HEIGHT OVERRIDES (ALWAYS AT THE BOTTOM)
-   -------------------------------------------------------------------------- */
-#about,
-#ceo,
-#team,
-.tobadem-team-section,
-#testimonials,
-#partners,
-.developer-partners-section,
-#blog,
-#contact {
-  padding-top: 3rem !important;
-  padding-bottom: 3rem !important;
-  min-height: auto !important;
-  height: auto !important;
-}
-
-#properties {
-  padding-top: 4rem !important;
-  padding-bottom: 4rem !important;
-  height: auto !important;
-}
-
-#home.hero {
-  min-height: 70vh;
-}
-
-section .section-header {
-  margin-top: 0 !important;
-  margin-bottom: 1.5rem !important;
-}
-
-@media (max-width: 768px) {
-  #about, #ceo, #team, #testimonials, #partners, #blog, #contact {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
+  .tobadem-team-section .team-slider { 
+    grid-auto-columns: 85% !important; 
+    justify-content: center;
   }
 }
