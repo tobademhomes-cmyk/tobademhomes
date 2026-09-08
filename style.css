@@ -108,6 +108,7 @@ section,
 
 .section-header h2 {
   font-size: 2.25rem;
+  font-weight: 800;
   margin-bottom: 0.5rem;
 }
 
@@ -294,31 +295,43 @@ header {
 }
 
 /* --------------------------------------------------------------------------
-   6. About Us Section
+   6. About Us Section (Standardized Header Scale & Center Alignment)
    -------------------------------------------------------------------------- */
-#about p,
-.about-section p,
-.about-content p {
-  text-align: justify !important;
-  text-justify: inter-word !important;
-  max-width: 950px !important;
+#about h2,
+.about-section h2,
+.about-text h2,
+#about .section-header {
+  font-size: 2.25rem !important; /* Standardized to match all section titles */
+  font-weight: 800 !important;
+  color: var(--primary) !important;
+  text-align: center !important;
+  margin-bottom: 0.75rem !important;
+}
+
+#about p.lead,
+.about-section p.lead,
+.about-text p.lead,
+#about .lead {
+  text-align: center !important;
+  max-width: 900px !important;
   margin-left: auto !important;
   margin-right: auto !important;
+  margin-bottom: 2rem !important;
+}
+
+/* Maintain Justified Body Paragraphs Across Full Width */
+#about p:not(.lead),
+.about-section p:not(.lead),
+.about-content p:not(.lead) {
+  text-align: justify !important;
+  text-justify: inter-word !important;
+  max-width: 100% !important;
+  margin-bottom: 1.2rem;
 }
 
 .about-text {
-  max-width: 800px;
+  max-width: 100% !important;
   margin: 0 auto;
-  text-align: center;
-}
-
-.about-text h2 {
-  font-size: 2.25rem;
-  margin-bottom: 1rem;
-}
-
-.about-text p {
-  margin-bottom: 1.2rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -402,7 +415,7 @@ header {
 }
 
 /* --------------------------------------------------------------------------
-   8. Meet Our Team Section (Scope-Protected & Mobile Slider Optimized)
+   8. Meet Our Team Section (Scope-Protected)
    -------------------------------------------------------------------------- */
 .tobadem-team-section {
   text-align: center;
@@ -463,7 +476,6 @@ header {
   scroll-snap-align: center;
 }
 
-/* Guarantee CEO card always snaps as card #1 */
 .tobadem-team-section .team-card:first-child {
   scroll-snap-align: start;
 }
@@ -1138,7 +1150,7 @@ section .section-header {
   }
 }
 
-/* Tablets & Mobile Landscape */
+/* Tablets */
 @media (max-width: 992px) {
   .ceo-wrapper {
     flex-direction: column;
@@ -1148,16 +1160,13 @@ section .section-header {
     flex: initial;
     width: 100% !important;
     max-width: 480px !important;
-    height: auto !important;
     margin: 0 auto 1.5rem auto !important;
-    display: block !important;
   }
 
   .ceo-img {
     width: 100% !important;
     height: 380px !important;
     object-fit: cover !important;
-    display: block !important;
   }
 
   .footer-container {
@@ -1165,7 +1174,7 @@ section .section-header {
   }
 }
 
-/* Small Tablets & Handheld Devices */
+/* Small Tablets & Handheld Devices (< 768px) */
 @media (max-width: 768px) {
   #about, #ceo, #team, #testimonials, #partners, #blog, #contact {
     padding-top: 2rem !important;
@@ -1220,12 +1229,12 @@ section .section-header {
     z-index: 1000;
   }
 
-  /* Hero Mobile Fix for Small Displays */
+  /* Hero Section Mobile Fix */
   .hero,
   #home.hero {
     height: auto !important;
     min-height: 0 !important;
-    padding-top: 5.5rem !important; /* Prevents text from hiding under fixed navbar */
+    padding-top: 5.5rem !important;
     padding-bottom: 3.5rem !important;
   }
 
@@ -1256,11 +1265,9 @@ section .section-header {
   .blog-modal-content { padding: 1.5rem; margin: 20px auto; }
   .blog-modal-header h2 { font-size: 1.5rem; }
 
-  /* ==========================================================================
-     MOBILE TEAM SLIDER & BUTTON REPOSITIONING (< 768px)
-     ========================================================================== */
+  /* Mobile Team Slider & Bottom-Centered Buttons */
   .tobadem-team-section .slider-wrapper {
-    padding-bottom: 65px !important; /* Reserves space below cards for arrow buttons */
+    padding-bottom: 65px !important;
   }
 
   .tobadem-team-section .team-slider { 
@@ -1283,7 +1290,6 @@ section .section-header {
     scroll-snap-align: center !important;
   }
 
-  /* Force CEO Card (Member 1) to snap to start */
   .tobadem-team-section .team-card:first-child {
     scroll-snap-align: start !important;
   }
@@ -1291,9 +1297,6 @@ section .section-header {
   .tobadem-team-section .team-card .image-container {
     height: auto !important;
     min-height: 0 !important;
-    aspect-ratio: auto !important;
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
   }
 
   .tobadem-team-section .team-card .image-container img {
@@ -1308,10 +1311,9 @@ section .section-header {
     position: static !important;
     padding-top: 12px !important;
     padding-bottom: 16px !important;
-    flex-grow: 0 !important;
   }
 
-  /* Force Navigation Buttons Visible & Positioned Bottom-Center */
+  /* Force Navigation Buttons Visible on Mobile */
   .tobadem-team-section .slide-btn {
     display: flex !important;
     top: auto !important;
