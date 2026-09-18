@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tobadem Homes - Admin Portal</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico" />
+    <style>
+      .admin-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 1.5rem;
+      }
+      .admin-card {
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: var(--radius-lg, 8px);
+        border: 1px solid var(--border-color, #e2e8f0);
+        box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
+        margin-bottom: 2rem;
+      }
+      .admin-form-group {
+        margin-bottom: 1rem;
+      }
+      .admin-form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+        color: var(--primary, #0a192f);
+      }
+      .admin-form-group input,
+      .admin-form-group select,
+      .admin-form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-color, #cbd5e1);
+        border-radius: var(--radius-sm, 4px);
+        font-family: inherit;
+      }
+      .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+      .admin-table th,
+      .admin-table td {
+        padding: 0.75rem;
+        border: 1px solid var(--border-color, #e2e8f0);
+        text-align: left;
+      }
+      .admin-table th {
+        background: var(--primary, #0a192f);
+        color: #ffffff;
+      }
+      .btn-danger {
+        background: #ef4444;
+        color: #fff;
+        border: none;
+        padding: 0.4rem 0.8rem;
+        border-radius: var(--radius-sm, 4px);
+        cursor: pointer;
+      }
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ADMIN LOGIN SECTION -->
+    <div id="auth-section" class="admin-container">
+      <div class="admin-card" style="max-width: 400px; margin: 4rem auto">
+        <h2 style="margin-bottom: 1rem; text-align: center">
+          Tobadem Admin Login
+        </h2>
+        <form id="adminLoginForm">
+          <div class="admin-form-group">
+            <label for="adminEmail">Email Address</label>
+            <input
+              type="email"
+              id="adminEmail"
+              placeholder="admin@tobademhomes.com"
+              required
+            />
+          </div>
+          <div class="admin-form-group">
+            <label for="adminPassword">Password</label>
+            <input type="password" id="adminPassword" required />
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%">
+            Sign In
+          </button>
+          <p
+            id="loginError"
+            style="
+              color: red;
+              margin-top: 0.5rem;
+              font-size: 0.85rem;
+              text-align: center;
+            "
+          ></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- DASHBOARD CONTROL PANEL -->
+    <div id="dashboard-section" class="admin-container hidden">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+        "
+      >
+        <h1>Tobadem Homes Admin Panel</h1>
+        <button
+          id="logoutBtn"
+          class="btn-secondary"
+          style="
+            color: var(--primary, #0a192f);
+            border-color: var(--primary, #0a192f);
+            cursor: pointer;
+          "
+        >
+          Sign Out
+        </button>
+      </div>
+
+      <!-- ADD / EDIT PROPERTY FORM -->
+      <div class="admin-card">
+        <h3 id="formTitle">Add New Property</h3>
+        <form id="propertyForm" style="margin-top: 1rem">
+          <input type="hidden" id="propId" />
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem">
+            <div class="admin-form-group">
+              <label for="propTitle">Property Title</label>
+              <input
+                type="text"
+                id="propTitle"
+                placeholder="e.g. Tobadem Homes Estate"
+                required
+              />
+            </div>
+            <div class="admin-form-group">
+              <label for="propLocation">Location</label>
+              <input
+                type="text"
+                id="propLocation"
+                placeholder="e.g. Mowe-Ofada, Ogun State"
+                required
+              />
+            </div>
+          </div>
+
+          <div
+            style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem"
+          >
+            <div class="admin-form-group">
+              <label for="propType">Property Type</label>
+              <input
+                type="text"
+                id="propType"
+                placeholder="e.g. Residential Land"
+                required
+              />
+            </div>
+            <div class="admin-form-group">
+              <label for="propPrice">Total Price</label>
+              <input
+                type="text"
+                id="propPrice"
+                placeholder="e.g. ₦3,500,000"
+                required
+              />
+            </div>
+            <div class="admin-form-group">
+              <label for="propDeposit">Initial Deposit</label>
+              <input type="text" id="propDeposit" placeholder="e.g. ₦500,000" />
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="propFeatures">Features (Comma Separated)</label>
+            <input
+              type="text"
+              id="propFeatures"
+              placeholder="Perimeter Fencing, Gate House, Dry Land"
+            />
+          </div>
+
+          <div class="admin-form-group">
+            <label for="propImageFile"
+              >Upload Image to Storage (property-images bucket)</label
+            >
+            <input type="file" id="propImageFile" accept="image/*" />
+          </div>
+
+          <div class="admin-form-group">
+            <label for="propImageUrl">Or Direct Image URL</label>
+            <input type="text" id="propImageUrl" placeholder="https://..." />
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-top: 1rem">
+            <button
+              type="submit"
+              class="btn-primary"
+              id="savePropBtn"
+              style="cursor: pointer"
+            >
+              Save Property
+            </button>
+            <button
+              type="button"
+              class="btn-secondary"
+              id="cancelEditBtn"
+              style="
+                color: var(--primary, #0a192f);
+                border-color: var(--primary, #0a192f);
+                display: none;
+                cursor: pointer;
+              "
+            >
+              Cancel Edit
+            </button>
+          </div>
+          <p id="formStatus" style="margin-top: 0.5rem; font-weight: 600"></p>
+        </form>
+      </div>
+
+      <!-- EXISTING PROPERTIES TABLE -->
+      <div class="admin-card">
+        <h3>Current Property Listings</h3>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Location</th>
+              <th>Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminPropertyTableBody">
+            <!-- Populated dynamically via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
